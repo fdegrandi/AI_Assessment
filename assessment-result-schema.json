@@ -1,0 +1,150 @@
+{
+  "assessmentId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "submittedAt": "2026-05-04T11:42:18-03:00",
+  "version": "2.0",
+
+  "lead": {
+    "name": "Maria Silva",
+    "email": "maria.silva@contoso.com.br",
+    "company": "Contoso Tecnologia Ltda",
+    "role": "CTO",
+    "sector": "Tecnologia"
+  },
+
+  "results": {
+    "overallScore": 58,
+    "overallLevel": {
+      "num": 3,
+      "name": "Desenvolvimento"
+    },
+    "ambitionScore": 92,
+    "ambitionLevel": {
+      "num": 5,
+      "name": "Liderança"
+    },
+    "gap": 2,
+    "gapMessage": "GAP de 2 níveis — Há uma distância significativa entre sua maturidade atual e a ambição. Recomendamos priorizar as dimensões mais fracas com ações estruturadas de médio prazo."
+  },
+
+  "dimensions": [
+    {
+      "id": "estrategia",
+      "name": "Estratégia & Liderança",
+      "type": "maturity",
+      "score": 65,
+      "rawSum": 13,
+      "level": { "num": 4, "name": "Integrado" },
+      "answers": [
+        { "questionId": "q1", "questionText": "Como a IA está inserida na estratégia corporativa?", "value": 3, "selectedText": "Plano definido" },
+        { "questionId": "q2", "questionText": "Qual o envolvimento da liderança (C-Level) com IA?", "value": 3, "selectedText": "Patrocinadores ativos" },
+        { "questionId": "q3", "questionText": "Existe budget específico para IA?", "value": 3, "selectedText": "Linha orçamentária própria" },
+        { "questionId": "q4", "questionText": "Há papel formal responsável pela estratégia de IA?", "value": 2, "selectedText": "Responsabilidade informal" },
+        { "questionId": "q5", "questionText": "Projetos de IA estão ligados a KPIs estratégicos?", "value": 2, "selectedText": "Conexão superficial" }
+      ]
+    },
+    {
+      "id": "dados",
+      "name": "Dados & Infraestrutura",
+      "type": "maturity",
+      "score": 45,
+      "rawSum": 9,
+      "level": { "num": 3, "name": "Desenvolvimento" },
+      "answers": [
+        { "questionId": "q1", "questionText": "Como avalia a qualidade e disponibilidade dos dados?", "value": 2, "selectedText": "Parcialmente estruturados" },
+        { "questionId": "q2", "questionText": "Qual a capacidade tecnológica para treinar/executar IA?", "value": 2, "selectedText": "Cloud básica" },
+        { "questionId": "q3", "questionText": "Existe política formal de governança de dados?", "value": 2, "selectedText": "Em construção" },
+        { "questionId": "q4", "questionText": "Qual o nível de integração entre sistemas e dados?", "value": 2, "selectedText": "Integrações pontuais" },
+        { "questionId": "q5", "questionText": "Como trata segurança de dados em projetos de IA?", "value": 1, "selectedText": "Sem controles específicos" }
+      ]
+    },
+    {
+      "id": "pessoas",
+      "name": "Talentos & Cultura",
+      "type": "maturity",
+      "score": 50,
+      "rawSum": 10,
+      "level": { "num": 3, "name": "Desenvolvimento" },
+      "answers": [
+        { "questionId": "q1", "questionText": "Quantos profissionais com skills de IA/ML internamente?", "value": 2, "selectedText": "1–3 profissionais" },
+        { "questionId": "q2", "questionText": "As decisões de negócio são tomadas com base em dados?", "value": 2, "selectedText": "Dados usados pontualmente" },
+        { "questionId": "q3", "questionText": "A empresa investe em treinamento em IA?", "value": 2, "selectedText": "Iniciativas isoladas" },
+        { "questionId": "q4", "questionText": "Consegue atrair e reter talentos em IA e dados?", "value": 2, "selectedText": "Dificuldade moderada" },
+        { "questionId": "q5", "questionText": "Como gerencia a mudança cultural gerada pela IA?", "value": 2, "selectedText": "Comunicação básica" }
+      ]
+    },
+    {
+      "id": "processos",
+      "name": "Implementação & Escala",
+      "type": "maturity",
+      "score": 55,
+      "rawSum": 11,
+      "level": { "num": 3, "name": "Desenvolvimento" },
+      "answers": [
+        { "questionId": "q1", "questionText": "Quantos projetos de IA estão em produção gerando valor?", "value": 3, "selectedText": "3–10 projetos" },
+        { "questionId": "q2", "questionText": "Usa metodologias estruturadas para desenvolver IA?", "value": 2, "selectedText": "Metodologia genérica" },
+        { "questionId": "q3", "questionText": "Usa IA generativa (Copilot, LLMs) nos negócios?", "value": 2, "selectedText": "Uso informal" },
+        { "questionId": "q4", "questionText": "Quão eficiente é em escalar IA de piloto para produção?", "value": 2, "selectedText": "Escalou com dificuldade" },
+        { "questionId": "q5", "questionText": "Tem parceiros estratégicos para alavancar IA?", "value": 2, "selectedText": "Fornecedores pontuais" }
+      ]
+    },
+    {
+      "id": "governanca",
+      "name": "Governança & Ética",
+      "type": "maturity",
+      "score": 70,
+      "rawSum": 14,
+      "level": { "num": 4, "name": "Integrado" },
+      "answers": [
+        { "questionId": "q1", "questionText": "Possui políticas formais de IA responsável?", "value": 3, "selectedText": "Política aprovada" },
+        { "questionId": "q2", "questionText": "Como trata conformidade com LGPD e regulações de IA?", "value": 3, "selectedText": "Adequação em curso" },
+        { "questionId": "q3", "questionText": "Se preocupa com viés e explicabilidade dos modelos?", "value": 3, "selectedText": "Processo de validação" },
+        { "questionId": "q4", "questionText": "Existe gestão de riscos específica para IA?", "value": 3, "selectedText": "Avaliação de risco de IA" },
+        { "questionId": "q5", "questionText": "É transparente com stakeholders sobre o uso de IA?", "value": 2, "selectedText": "Comunicação reativa" }
+      ]
+    },
+    {
+      "id": "resultados",
+      "name": "Resultados & ROI",
+      "type": "maturity",
+      "score": 60,
+      "rawSum": 12,
+      "level": { "num": 3, "name": "Desenvolvimento" },
+      "answers": [
+        { "questionId": "q1", "questionText": "Consegue quantificar o retorno dos investimentos em IA?", "value": 3, "selectedText": "KPIs definidos" },
+        { "questionId": "q2", "questionText": "Em que medida a IA contribuiu para resultados financeiros?", "value": 3, "selectedText": "Impacto moderado" },
+        { "questionId": "q3", "questionText": "A IA contribuiu para redução de custos operacionais?", "value": 2, "selectedText": "Pequenas automações" },
+        { "questionId": "q4", "questionText": "A IA melhorou a experiência dos clientes?", "value": 2, "selectedText": "Experimentos iniciais" },
+        { "questionId": "q5", "questionText": "A IA gerou diferenciais competitivos concretos?", "value": 2, "selectedText": "Na mesma linha" }
+      ]
+    },
+    {
+      "id": "ambicao",
+      "name": "Sua Visão de Futuro",
+      "type": "aspirational",
+      "score": 92,
+      "rawSum": 18,
+      "level": { "num": 5, "name": "Liderança" },
+      "answers": [
+        { "questionId": "q1", "questionText": "O que mais move sua empresa a investir em IA agora?", "value": 4, "selectedText": "Liderar e definir tendências" },
+        { "questionId": "q2", "questionText": "Imagine sua empresa daqui a 2 anos. Como a IA está presente?", "value": 4, "selectedText": "IA como diferencial de negócio" },
+        { "questionId": "q3", "questionText": "Como sua empresa lida com mudanças profundas quando há ganho estratégico claro?", "value": 4, "selectedText": "Somos agentes de disrupção" },
+        { "questionId": "q4", "questionText": "Que resultado de IA geraria mais valor nos próximos 12 meses?", "value": 3, "selectedText": "Criar agentes que operam 24/7" },
+        { "questionId": "q5", "questionText": "Qual o nível de investimento que sua empresa está disposta a fazer em IA?", "value": 3, "selectedText": "Programa estruturado com orçamento dedicado" }
+      ]
+    }
+  ],
+
+  "recommendedProducts": [
+    { "id": "copilot-fasttrack", "name": "Copilot Adoption FastTrack", "tag": "Adoção", "fit": "high", "relevance": 3 },
+    { "id": "copilot-studio", "name": "Copilot Studio Catalyst", "tag": "Automação", "fit": "high", "relevance": 3 },
+    { "id": "coe-governance", "name": "COE Admin & Governance", "tag": "Governança", "fit": "medium", "relevance": 1 },
+    { "id": "coe-change", "name": "COE Adoption & Change Management", "tag": "Change Mgmt", "fit": "low", "relevance": 0 }
+  ],
+
+  "metadata": {
+    "userAgent": "Mozilla/5.0 ...",
+    "language": "pt-BR",
+    "timezone": "America/Sao_Paulo",
+    "source": "hotsite-bizapp"
+  }
+}

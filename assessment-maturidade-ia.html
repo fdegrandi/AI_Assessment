@@ -1,0 +1,2058 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assessment de Maturidade em IA | Bizapp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Bizapp Brand Colors */
+  --purple-dark: #8034AE;
+  --purple: #953CCC;
+  --purple-light: #AD46ED;
+  --fucsia: #CB61E8;
+  --brand-black: #06010A;
+  --brand-offwhite: #F3F2F5;
+
+  /* Functional tokens — Light theme (Bizapp) */
+  --bg-dark: #FFFFFF;
+  --bg-section: #F3F2F5;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FAF5FE;
+  --primary: #953CCC;
+  --primary-glow: rgba(149, 60, 204, 0.25);
+  --accent-green: #10b981;
+  --accent-purple: #AD46ED;
+  --accent-pink: #CB61E8;
+  --accent-amber: #f59e0b;
+  --accent-red: #ef4444;
+  --accent-blue: #3b82f6;
+  --text: #1A0F25;
+  --text-muted: #4A3A5C;
+  --text-dim: #8A7A9E;
+  --border: rgba(149, 60, 204, 0.18);
+  --border-hover: rgba(149, 60, 204, 0.5);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 4px 24px rgba(128, 52, 174, 0.08);
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-weight: 400;
+  background: var(--bg-dark);
+  color: var(--text);
+  line-height: 1.6;
+  letter-spacing: -1px;
+  overflow-x: hidden;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+h1,h2,h3,h4 { font-weight: 600; line-height: 1.2; letter-spacing: -1.4px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 32px; border-radius: 50px; font-weight: 600;
+  font-size: 1rem; cursor: pointer; border: none;
+  transition: var(--transition); text-decoration: none;
+  font-family: inherit;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--purple-dark), var(--fucsia));
+  color: #fff; box-shadow: 0 4px 20px var(--primary-glow);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(149, 60, 204, 0.45);
+}
+.btn-outline {
+  background: transparent; color: var(--purple-light);
+  border: 2px solid var(--purple-light);
+}
+.btn-outline:hover { background: rgba(149, 60, 204, 0.1); }
+.btn-secondary {
+  background: rgba(149,60,204,0.06); color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: rgba(149,60,204,0.10); }
+.btn-sm { padding: 10px 24px; font-size: 0.9rem; }
+.btn-lg { padding: 18px 40px; font-size: 1.1rem; }
+
+/* ===== HEADER ===== */
+.header {
+  position: fixed; top:0; left:0; right:0; z-index: 100;
+  padding: 16px 0; transition: var(--transition);
+  background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px);
+  border-bottom: 1px solid transparent;
+}
+.header.scrolled { border-bottom-color: var(--border); box-shadow: 0 4px 20px rgba(128, 52, 174, 0.08); }
+.header .container { display: flex; align-items: center; justify-content: space-between; }
+.logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo svg { height: 28px; width: auto; }
+.logo img { height: 32px; width: auto; }
+.logo-text { font-size: 1.4rem; font-weight: 600; color: var(--text); letter-spacing: -1px; }
+.header-cta .btn { padding: 10px 24px; font-size: 0.875rem; }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh; display: flex; align-items: center;
+  position: relative; padding: 120px 0 80px;
+  background: radial-gradient(ellipse at 30% 20%, rgba(149,60,204,0.10) 0%, transparent 55%),
+              radial-gradient(ellipse at 70% 80%, rgba(203,97,232,0.10) 0%, transparent 55%),
+              radial-gradient(ellipse at 50% 50%, rgba(243,242,245,1) 0%, rgba(255,255,255,1) 70%);
+}
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 18px; border-radius: 50px; font-size: 0.8rem;
+  background: rgba(149, 60, 204, 0.08); border: 1px solid rgba(149, 60, 204, 0.35);
+  color: var(--purple-dark); font-weight: 600; margin-bottom: 24px;
+  box-shadow: 0 4px 16px rgba(149, 60, 204, 0.10);
+}
+.hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); animation: pulse-dot 2s infinite; }
+@keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+.hero h1 { font-size: clamp(2.5rem, 5vw, 3.8rem); font-weight: 600; margin-bottom: 20px; letter-spacing: -1.4px; }
+.hero h1 .gradient-text {
+  background: linear-gradient(135deg, var(--purple-dark), var(--fucsia));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero p { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 36px; max-width: 520px; }
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+.hero-stats { display: flex; gap: 40px; margin-top: 48px; }
+.hero-stat { text-align: center; }
+.hero-stat .number { font-size: 2rem; font-weight: 600; color: var(--purple-light); }
+.hero-stat .label { font-size: 0.8rem; color: var(--text-dim); margin-top: 4px; }
+
+/* Hero visual */
+.hero-visual { position: relative; display: flex; justify-content: center; }
+.radar-preview {
+  width: 400px; height: 400px; position: relative;
+  background: radial-gradient(circle, rgba(149,60,204,0.18) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.radar-ring {
+  position: absolute; border: 1px solid rgba(173,70,237,0.35); border-radius: 50%;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+.radar-ring:nth-child(1) { width: 100%; height: 100%; }
+.radar-ring:nth-child(2) { width: 75%; height: 75%; }
+.radar-ring:nth-child(3) { width: 50%; height: 50%; }
+.radar-ring:nth-child(4) { width: 25%; height: 25%; }
+.radar-label {
+  position: absolute; font-size: 0.7rem; color: var(--purple-dark);
+  background: #FFFFFF; padding: 5px 12px; border-radius: 20px;
+  border: 1px solid var(--purple-light); white-space: nowrap;
+  box-shadow: 0 2px 12px rgba(149, 60, 204, 0.18); font-weight: 600;
+}
+.radar-label:nth-child(5) { top: -8px; left: 50%; transform: translateX(-50%); }
+.radar-label:nth-child(6) { top: 18%; right: -10px; }
+.radar-label:nth-child(7) { bottom: 18%; right: -10px; }
+.radar-label:nth-child(8) { bottom: -8px; left: 50%; transform: translateX(-50%); }
+.radar-label:nth-child(9) { bottom: 18%; left: -10px; }
+.radar-label:nth-child(10) { top: 18%; left: -10px; }
+.radar-center-score {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  text-align: center;
+}
+.radar-center-score .score-num { font-size: 3rem; font-weight: 600; color: var(--purple-light); }
+.radar-center-score .score-label { font-size: 0.75rem; color: var(--text-dim); }
+
+/* ===== SECTIONS ===== */
+.section { padding: 100px 0; }
+.section-header { text-align: center; margin-bottom: 64px; }
+.section-header .tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.8rem; font-weight: 700; color: var(--fucsia);
+  text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;
+  padding: 6px 14px; border-radius: 50px;
+  background: rgba(203,97,232,0.12); border: 1px solid rgba(203,97,232,0.4);
+}
+.section-header h2 { font-size: clamp(2rem, 3.5vw, 2.8rem); margin-bottom: 16px; letter-spacing: -1.4px; }
+.section-header p { color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 1.1rem; }
+
+/* ===== BENEFITS ===== */
+.benefits-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.benefit-card {
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 32px 24px; text-align: center;
+  transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+.benefit-card:hover {
+  border-color: var(--border-hover); transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(149, 60, 204, 0.25);
+  background: var(--bg-card-hover);
+}
+.benefit-icon {
+  width: 56px; height: 56px; border-radius: 14px; margin: 0 auto 20px;
+  display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+}
+.benefit-card:nth-child(1) .benefit-icon { background: rgba(128,52,174,0.12); border: 1px solid rgba(128,52,174,0.30); }
+.benefit-card:nth-child(2) .benefit-icon { background: rgba(149,60,204,0.12); border: 1px solid rgba(149,60,204,0.30); }
+.benefit-card:nth-child(3) .benefit-icon { background: rgba(173,70,237,0.12); border: 1px solid rgba(173,70,237,0.30); }
+.benefit-card:nth-child(4) .benefit-icon { background: rgba(203,97,232,0.12); border: 1px solid rgba(203,97,232,0.30); }
+.benefit-card h3 { font-size: 1rem; margin-bottom: 8px; }
+.benefit-card p { font-size: 0.875rem; color: var(--text-muted); }
+
+/* ===== DIMENSIONS ===== */
+.dimensions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.dim-card {
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 32px; transition: var(--transition);
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.dim-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--dim-color), transparent);
+}
+.dim-card:hover {
+  border-color: var(--dim-color); transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(149, 60, 204, 0.18);
+  background: var(--bg-card-hover);
+}
+.dim-card .dim-num {
+  font-size: 0.75rem; font-weight: 700; color: var(--dim-color);
+  text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;
+}
+.dim-card .dim-icon { font-size: 2rem; margin-bottom: 16px; }
+.dim-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dim-card p { font-size: 0.85rem; color: var(--text-muted); }
+.dim-card:nth-child(1) { --dim-color: #8034AE; }
+.dim-card:nth-child(2) { --dim-color: #953CCC; }
+.dim-card:nth-child(3) { --dim-color: #AD46ED; }
+.dim-card:nth-child(4) { --dim-color: #CB61E8; }
+.dim-card:nth-child(5) { --dim-color: #b06cde; }
+.dim-card:nth-child(6) { --dim-color: #d07bf0; }
+.dim-aspirational {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, rgba(128,52,174,0.06), rgba(203,97,232,0.04));
+  border-color: var(--fucsia);
+  border-width: 2px;
+  box-shadow: 0 4px 20px rgba(203,97,232,0.15);
+}
+.dim-aspirational .dim-content { display: flex; align-items: center; gap: 32px; }
+.dim-aspirational .dim-icon { font-size: 2.5rem; margin-bottom: 0; }
+
+/* ===== LEVELS ===== */
+.levels-track {
+  display: flex; gap: 0; position: relative; margin-top: 20px;
+}
+.level-item {
+  flex: 1; text-align: center; padding: 32px 16px;
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  position: relative; transition: var(--transition);
+  box-shadow: var(--shadow);
+}
+.level-item:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.level-item:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+.level-item:hover { z-index: 2; transform: scale(1.05); border-color: var(--lv-color); }
+.level-item .lv-num {
+  font-size: 2.5rem; font-weight: 700; opacity: 0.15;
+  position: absolute; top: 10px; right: 16px;
+}
+.level-item .lv-icon { font-size: 2rem; margin-bottom: 12px; }
+.level-item .lv-name { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+.level-item .lv-range { font-size: 0.8rem; color: var(--text-dim); font-weight: 600; }
+.level-item:nth-child(1) { --lv-color: var(--accent-red); }
+.level-item:nth-child(2) { --lv-color: var(--accent-amber); }
+.level-item:nth-child(3) { --lv-color: var(--primary); }
+.level-item:nth-child(4) { --lv-color: var(--accent-purple); }
+.level-item:nth-child(5) { --lv-color: var(--accent-green); }
+.level-item .lv-bar {
+  height: 4px; background: var(--lv-color); border-radius: 2px;
+  margin-top: 16px; opacity: 0.6;
+}
+
+/* ===== HOW IT WORKS ===== */
+.steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.step-card { text-align: center; position: relative; }
+.step-num {
+  width: 48px; height: 48px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-weight: 600;
+  font-size: 1.2rem; margin: 0 auto 20px;
+  background: linear-gradient(135deg, var(--purple-dark), var(--fucsia));
+  color: #fff;
+}
+.step-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.step-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+/* ===== CTA SECTION ===== */
+.cta-section {
+  text-align: center; padding: 80px 0;
+  background: linear-gradient(180deg, transparent, rgba(128,52,174,0.18) 30%, rgba(203,97,232,0.12) 70%, transparent);
+  position: relative;
+}
+.cta-section::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 60%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple-light), transparent);
+}
+.cta-section::after {
+  content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 60%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple-light), transparent);
+}
+.cta-section h2 { font-size: 2.4rem; margin-bottom: 16px; }
+.cta-section p { color: var(--text-muted); margin-bottom: 32px; font-size: 1.1rem; }
+
+/* ===== PRODUCTS SECTION (Landing) ===== */
+.products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.product-card {
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 28px 24px;
+  transition: var(--transition); position: relative; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.product-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--prod-color, var(--primary)), transparent);
+}
+.product-card:hover {
+  border-color: var(--prod-color, var(--border-hover)); transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(149, 60, 204, 0.3);
+  background: var(--bg-card-hover);
+}
+.product-card .prod-tag {
+  display: inline-block; font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.5px; padding: 4px 12px;
+  border-radius: 20px; margin-bottom: 14px;
+  background: rgba(149,60,204,0.25); color: var(--prod-color, var(--purple-light));
+  border: 1px solid var(--prod-color, var(--purple-light));
+}
+.product-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+.product-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+.product-card .prod-targets {
+  margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px;
+}
+.product-card .prod-target {
+  font-size: 0.7rem; padding: 4px 11px; border-radius: 20px;
+  background: rgba(173,70,237,0.12); color: var(--text-muted); border: 1px solid var(--border);
+}
+@media (max-width: 1024px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) { .products-grid { grid-template-columns: 1fr; } }
+
+/* ===== RECOMMENDED PRODUCTS (Results) ===== */
+.rec-products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 16px; }
+.rec-product-card {
+  padding: 20px; border-radius: var(--radius-sm);
+  background: #FAF5FE; border: 1px solid var(--border);
+  transition: var(--transition);
+}
+.rec-product-card:hover { border-color: var(--border-hover); }
+.rec-product-card .rp-tag {
+  display: inline-block; font-size: 0.6rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px; padding: 2px 8px;
+  border-radius: 12px; margin-bottom: 10px;
+}
+.rec-product-card h4 { font-size: 0.95rem; margin-bottom: 6px; }
+.rec-product-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+.rec-product-card .rp-fit {
+  margin-top: 10px; font-size: 0.75rem; font-weight: 600; color: var(--accent-green);
+}
+@media (max-width: 768px) { .rec-products-grid { grid-template-columns: 1fr; } }
+
+/* ===== FOOTER ===== */
+.footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--border);
+  text-align: center; color: var(--text-muted); font-size: 0.85rem;
+  background: linear-gradient(180deg, transparent, rgba(128,52,174,0.08));
+}
+.footer-tagline {
+  font-size: 1rem; font-weight: 600; letter-spacing: -1.4px;
+  background: linear-gradient(135deg, var(--purple-dark), var(--fucsia));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+
+/* ================= SURVEY ================= */
+.survey-container {
+  display: none; min-height: 100vh;
+  background: var(--bg-section);
+}
+.survey-container.active { display: block; }
+
+/* Survey Header */
+.survey-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.95); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border); padding: 0;
+  box-shadow: 0 2px 12px rgba(128,52,174,0.06);
+}
+.survey-header-inner {
+  max-width: 900px; margin: 0 auto; padding: 16px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.survey-header .logo { font-size: 1.2rem; }
+.survey-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem; padding: 8px; }
+.survey-close:hover { color: var(--purple-dark); }
+
+/* Progress */
+.survey-progress {
+  position: fixed; top: 60px; left: 0; right: 0; z-index: 99;
+  background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+  padding: 12px 0 16px;
+  border-bottom: 1px solid var(--border);
+}
+.survey-progress-inner { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+.progress-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.8rem; }
+.progress-info .dim-name { color: var(--purple-light); font-weight: 600; }
+.progress-info .progress-count { color: var(--text-dim); }
+.progress-bar-bg {
+  height: 6px; background: rgba(149,60,204,0.10); border-radius: 3px; overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%; border-radius: 3px; transition: width 0.5s ease;
+  background: linear-gradient(90deg, var(--purple-dark), var(--fucsia));
+}
+.progress-dots {
+  display: flex; gap: 6px; margin-top: 10px; justify-content: center;
+}
+.progress-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(149,60,204,0.15); transition: var(--transition);
+}
+.progress-dot.active { background: var(--purple-light); width: 24px; border-radius: 4px; }
+.progress-dot.done { background: var(--accent-green); }
+
+/* Lead Form */
+.lead-form-wrap {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 120px 24px 60px;
+}
+.lead-form {
+  max-width: 500px; width: 100%;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 48px 40px;
+  box-shadow: var(--shadow);
+}
+.lead-form h2 { font-size: 1.6rem; margin-bottom: 8px; }
+.lead-form .subtitle { color: var(--text-muted); margin-bottom: 32px; font-size: 0.95rem; }
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block; font-size: 0.85rem; font-weight: 600;
+  color: var(--text-muted); margin-bottom: 6px;
+}
+.form-group input, .form-group select {
+  width: 100%; padding: 12px 16px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: #FFFFFF;
+  color: var(--text); font-size: 1rem; font-family: inherit;
+  transition: var(--transition);
+}
+.form-group input:focus, .form-group select:focus {
+  outline: none; border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(149,60,204,0.2);
+}
+.form-group select option { background: #FFFFFF; color: var(--text); }
+
+/* Question Screen */
+.question-screen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 140px 24px 80px;
+}
+.question-card { max-width: 760px; width: 100%; }
+.question-dim-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; border-radius: 50px; font-size: 0.8rem;
+  font-weight: 600; margin-bottom: 24px;
+  background: rgba(149,60,204,0.12); color: var(--purple-light);
+  border: 1px solid rgba(149,60,204,0.25);
+}
+.question-text {
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem); font-weight: 700;
+  margin-bottom: 40px; line-height: 1.4;
+}
+.question-num { color: var(--text-dim); font-weight: 400; font-size: 0.85em; }
+
+/* Tooltip / Saiba mais */
+.question-tooltip { margin: -20px 0 32px; }
+.question-tooltip summary {
+  cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.85rem; color: var(--purple-light); font-weight: 600;
+  padding: 8px 14px; border-radius: 50px;
+  background: rgba(149, 60, 204, 0.1); border: 1px solid rgba(149, 60, 204, 0.3);
+  list-style: none; user-select: none; transition: var(--transition);
+}
+.question-tooltip summary::-webkit-details-marker { display: none; }
+.question-tooltip summary::marker { display: none; content: ''; }
+.question-tooltip summary:hover {
+  background: rgba(149, 60, 204, 0.18);
+  border-color: var(--purple-light);
+  color: var(--text);
+}
+.question-tooltip[open] summary {
+  background: rgba(149, 60, 204, 0.18);
+  border-color: var(--purple-light);
+  color: var(--text);
+}
+.question-tooltip-content {
+  margin-top: 12px; padding: 18px 22px;
+  background: rgba(149, 60, 204, 0.08);
+  border-left: 3px solid var(--purple-light);
+  border-radius: 10px;
+  font-size: 0.92rem; color: var(--text-muted); line-height: 1.7;
+  animation: fadeInUp 0.3s ease;
+}
+.question-tooltip-content strong { color: var(--text); font-weight: 600; }
+
+/* Options */
+.options-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 48px; }
+.option-btn {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 20px 24px; border-radius: var(--radius-sm);
+  background: var(--bg-card); border: 2px solid var(--border);
+  cursor: pointer; transition: var(--transition); text-align: left;
+  width: 100%; color: var(--text); font-family: inherit; font-size: inherit;
+}
+.option-btn:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+.option-btn.selected { border-color: var(--purple); background: rgba(149,60,204,0.1); }
+.option-score {
+  width: 36px; height: 36px; min-width: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 600;
+  background: rgba(149,60,204,0.10); color: var(--purple-dark);
+  transition: var(--transition);
+}
+.option-btn.selected .option-score { background: linear-gradient(135deg, var(--purple-dark), var(--fucsia)); color: #fff; }
+.option-text { font-size: 1rem; line-height: 1.5; padding-top: 6px; }
+
+/* Navigation */
+.question-nav { display: flex; justify-content: space-between; align-items: center; }
+.question-nav .btn { min-width: 140px; justify-content: center; }
+
+/* ================= RESULTS ================= */
+.results-container {
+  display: none; min-height: 100vh; background: var(--bg-section);
+}
+.results-container.active { display: block; }
+.results-wrap { max-width: 960px; margin: 0 auto; padding: 100px 24px 60px; }
+
+/* Score Hero */
+.score-hero {
+  text-align: center; padding: 60px 40px;
+  background: linear-gradient(135deg, rgba(128,52,174,0.06), rgba(203,97,232,0.04));
+  border: 1px solid rgba(149,60,204,0.18); border-radius: var(--radius);
+  margin-bottom: 40px; position: relative; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.score-hero::before {
+  content: ''; position: absolute; top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at center, rgba(149,60,204,0.04), transparent 50%);
+}
+.score-hero .company-name { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 8px; position: relative; }
+.score-hero h2 { font-size: 1.6rem; margin-bottom: 40px; position: relative; }
+.score-circle-wrap { position: relative; width: 220px; height: 220px; margin: 0 auto 24px; }
+.score-circle-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.score-circle-bg { fill: none; stroke: rgba(149,60,204,0.12); stroke-width: 8; }
+.score-circle-fill { fill: none; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 2s ease; }
+.score-value {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  text-align: center;
+}
+.score-value .big { font-size: 3.5rem; font-weight: 700; line-height: 1; }
+.score-value .of { font-size: 1rem; color: var(--text-dim); }
+.score-level-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px; border-radius: 50px; font-weight: 700;
+  font-size: 1.1rem; position: relative;
+}
+
+/* Grid */
+.results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+.results-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px;
+  box-shadow: var(--shadow);
+}
+.results-card h3 { font-size: 1.1rem; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+.results-card.full { grid-column: 1 / -1; }
+
+/* Radar */
+.radar-container { display: flex; justify-content: center; padding: 20px 0; }
+.radar-container svg { max-width: 400px; width: 100%; }
+.radar-polygon-bg { fill: none; stroke: rgba(128,52,174,0.15); stroke-width: 1; }
+.radar-polygon-fill { fill: rgba(149,60,204,0.18); stroke: var(--purple); stroke-width: 2; }
+.radar-polygon-ambition { fill: rgba(203,97,232,0.08); stroke: var(--fucsia); stroke-width: 1.5; stroke-dasharray: 6 4; }
+.radar-axis { stroke: rgba(128,52,174,0.15); stroke-width: 1; }
+.radar-label-text { fill: var(--text-muted); font-size: 11px; font-family: 'Inter', sans-serif; }
+.radar-value-text { fill: var(--purple-light); font-size: 10px; font-weight: 600; font-family: 'Inter', sans-serif; }
+.radar-legend {
+  display: flex; justify-content: center; gap: 24px; margin-top: 16px; font-size: 0.8rem;
+}
+.radar-legend-item { display: flex; align-items: center; gap: 6px; color: var(--text-muted); }
+.radar-legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+/* Dimension bars */
+.dim-result { margin-bottom: 20px; }
+.dim-result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.dim-result-name { font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.dim-result-score { font-size: 0.85rem; font-weight: 600; color: var(--purple-light); }
+.dim-bar-bg { height: 10px; background: rgba(149,60,204,0.10); border-radius: 5px; overflow: hidden; }
+.dim-bar-fill { height: 100%; border-radius: 5px; transition: width 1.5s ease; }
+.dim-result-level { font-size: 0.75rem; color: var(--text-dim); margin-top: 4px; }
+
+/* GAP */
+.gap-card {
+  background: linear-gradient(135deg, rgba(128,52,174,0.06), rgba(203,97,232,0.04));
+  border-color: rgba(149,60,204,0.20);
+}
+.gap-visual { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; justify-content: center; }
+.gap-level-box {
+  padding: 16px 24px; border-radius: var(--radius-sm); text-align: center;
+  background: #FFFFFF; border: 1px solid var(--border); min-width: 120px;
+  box-shadow: 0 2px 8px rgba(128,52,174,0.06);
+}
+.gap-level-box .label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.gap-level-box .level { font-size: 1.8rem; font-weight: 700; }
+.gap-level-box .name { font-size: 0.8rem; color: var(--text-muted); }
+.gap-arrow { font-size: 1.5rem; color: var(--purple-light); }
+.gap-message {
+  text-align: center; padding: 16px; border-radius: var(--radius-sm);
+  background: rgba(149,60,204,0.08); color: var(--text); font-weight: 600; font-size: 0.95rem;
+  border: 1px solid rgba(149,60,204,0.18);
+}
+
+/* Recommendations */
+.rec-item {
+  padding: 20px; border-radius: var(--radius-sm);
+  background: #FAF5FE; border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.rec-item .rec-dim { font-size: 0.8rem; font-weight: 600; color: var(--purple-light); margin-bottom: 6px; }
+.rec-item .rec-text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+/* Actions */
+.results-actions {
+  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+  padding: 40px 0;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in { animation: fadeInUp 0.6s ease forwards; }
+
+/* Toast notifications */
+.toast {
+  position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
+  padding: 16px 32px; border-radius: 50px; font-size: 0.95rem; font-weight: 600;
+  z-index: 1000; animation: toastIn 0.4s ease forwards;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+.toast-success { background: var(--accent-green); color: #fff; }
+.toast-error { background: var(--accent-red); color: #fff; }
+.toast-loading { background: var(--purple); color: #fff; }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero-visual { order: -1; }
+  .radar-preview { width: 300px; height: 300px; }
+  .dimensions-grid { grid-template-columns: repeat(2, 1fr); }
+  .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+  .results-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .hero { padding-top: 100px; }
+  .hero-stats { gap: 24px; }
+  .hero-actions { flex-direction: column; }
+  .levels-track { flex-direction: column; gap: 8px; }
+  .level-item, .level-item:first-child, .level-item:last-child { border-radius: var(--radius-sm); }
+  .dimensions-grid { grid-template-columns: 1fr; }
+  .benefits-grid { grid-template-columns: 1fr; }
+  .steps-grid { grid-template-columns: 1fr; }
+  .lead-form { padding: 32px 24px; }
+  .score-hero { padding: 40px 24px; }
+  .dim-aspirational .dim-content { flex-direction: column; text-align: center; }
+}
+@media (max-width: 480px) {
+  .radar-preview { width: 250px; height: 250px; }
+  .radar-label { font-size: 0.6rem; padding: 3px 7px; }
+  .hero-stats { flex-direction: column; gap: 16px; }
+}
+
+/* Print */
+@media print {
+  .header, .survey-header, .survey-progress, .question-nav, .results-actions { display: none; }
+  .results-container { display: block !important; }
+  .results-wrap { padding-top: 20px; }
+  body { background: #fff; color: #1a1a1a; }
+  .results-card { border: 1px solid #ddd; background: #fff; box-shadow: none; }
+  .score-hero, .lead-form, .product-card, .level-item, .benefit-card, .dim-card { box-shadow: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== LANDING PAGE ===== -->
+<div id="landing">
+
+  <!-- Header -->
+  <header class="header" id="mainHeader">
+    <div class="container">
+      <a href="#" class="logo"><img src="data:image/png;base64,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" alt="bizapp"></a>
+      <div class="header-cta">
+        <button class="btn btn-primary btn-sm" onclick="startSurvey()">Iniciar Assessment</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-badge">Assessment Gratuito</div>
+          <h1>Descubra o nível de <span class="gradient-text">maturidade em IA</span> da sua empresa</h1>
+          <p>Responda 35 perguntas em 10 minutos e receba um diagnóstico completo com recomendações personalizadas para acelerar sua jornada de IA.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary btn-lg" onclick="startSurvey()">Iniciar Assessment →</button>
+            <a href="#como-funciona" class="btn btn-outline btn-lg">Como funciona</a>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><div class="number">35</div><div class="label">Perguntas</div></div>
+            <div class="hero-stat"><div class="number">9</div><div class="label">Dimensões</div></div>
+            <div class="hero-stat"><div class="number">10</div><div class="label">Minutos</div></div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="radar-preview">
+            <div class="radar-ring"></div>
+            <div class="radar-ring"></div>
+            <div class="radar-ring"></div>
+            <div class="radar-ring"></div>
+            <span class="radar-label">Estratégia</span>
+            <span class="radar-label">Dados</span>
+            <span class="radar-label">Implementação</span>
+            <span class="radar-label">Resultados</span>
+            <span class="radar-label">Governança</span>
+            <span class="radar-label">Talentos</span>
+            <div class="radar-center-score">
+              <div class="score-num">73</div>
+              <div class="score-label">Score exemplo</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits -->
+  <section class="section" style="background: var(--bg-section);">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag">✦ Por que fazer</div>
+        <h2>O que você vai receber</h2>
+        <p>Um diagnóstico completo e acionável sobre a maturidade em IA da sua organização.</p>
+      </div>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">🎯</div>
+          <h3>Diagnóstico preciso</h3>
+          <p>Avaliação em 8 dimensões com pesos específicos por setor da sua empresa.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">⚡</div>
+          <h3>Resultado imediato</h3>
+          <p>Score de 0 a 100 com nível de maturidade calculado em tempo real.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">🗺️</div>
+          <h3>Recomendações práticas</h3>
+          <p>Plano personalizado com próximos passos para evoluir cada dimensão.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">🤝</div>
+          <h3>Análise de GAP</h3>
+          <p>Compare onde você está com onde quer chegar e veja o caminho a percorrer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dimensions -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag">✦ Dimensões avaliadas</div>
+        <h2>8 dimensões + visão de futuro</h2>
+        <p>Modelo híbrido baseado em Gartner, Microsoft, MITRE, Accenture, Deloitte e MIT CISR — com pesos personalizados por setor.</p>
+      </div>
+      <div class="dimensions-grid">
+        <div class="dim-card">
+          <div class="dim-num">Dimensão 1</div>
+          <div class="dim-icon">🧭</div>
+          <h3>Estratégia de IA</h3>
+          <p>Alinhamento corporativo, envolvimento do C-Level, budget e liderança formal de IA.</p>
+        </div>
+        <div class="dim-card">
+          <div class="dim-num">Dimensão 2</div>
+          <div class="dim-icon">🛡️</div>
+          <h3>Governança & Ética</h3>
+          <p>IA responsável, LGPD, gestão de viés, explicabilidade e transparência com stakeholders.</p>
+        </div>
+        <div class="dim-card">
+          <div class="dim-num">Dimensão 3</div>
+          <div class="dim-icon">🧠</div>
+          <h3>Pessoas & Competências</h3>
+          <p>Skills internos, capacitação, cultura data-driven e gestão da mudança.</p>
+        </div>
+        <div class="dim-card">
+          <div class="dim-num">Dimensão 4</div>
+          <div class="dim-icon">🗄️</div>
+          <h3>Dados</h3>
+          <p>Qualidade, governança e integração de dados como ativo estratégico.</p>
+        </div>
+        <div class="dim-card">
+          <div class="dim-num">Dimensão 5</div>
+          <div class="dim-icon">⚙️</div>
+          <h3>Tecnologia & Infraestrutura</h3>
+          <p>Cloud, plataformas de IA generativa, agentes e maturidade MLOps.</p>
+        </div>
+        <div class="dim-card">
+          <div class="dim-num">Dimensão 6</div>
+          <div class="dim-icon">🔒</div>
+          <h3>Segurança & Risco de IA</h3>
+          <p>Prompt injection, vazamento de dados, validação contínua e monitoramento de modelos.</p>
+        </div>
+        <div class="dim-card">
+          <div class="dim-num">Dimensão 7</div>
+          <div class="dim-icon">🚀</div>
+          <h3>Adoção & Operações</h3>
+          <p>Projetos em produção, uso de GenAI/Copilot e capacidade de escalar de piloto a produção.</p>
+        </div>
+        <div class="dim-card">
+          <div class="dim-num">Dimensão 8</div>
+          <div class="dim-icon">📈</div>
+          <h3>Resultados & ROI</h3>
+          <p>Retorno mensurável, impacto financeiro e diferenciais competitivos sustentados por IA.</p>
+        </div>
+        <div class="dim-card dim-aspirational">
+          <div class="dim-num">Dimensão 9 — Aspiracional</div>
+          <div class="dim-content">
+            <div class="dim-icon">🎯</div>
+            <div>
+              <h3>Sua Visão de Futuro</h3>
+              <p>Perguntas que revelam sua ambição e nível-alvo desejado, gerando uma análise de GAP personalizada com roadmap de evolução.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Levels -->
+  <section class="section" style="background: var(--bg-section);">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag">✦ Níveis de maturidade</div>
+        <h2>5 níveis de evolução</h2>
+        <p>De iniciante a referência de mercado — descubra onde sua empresa se encontra.</p>
+      </div>
+      <div class="levels-track">
+        <div class="level-item">
+          <div class="lv-num">1</div>
+          <div class="lv-icon">🌱</div>
+          <div class="lv-name">Consciente</div>
+          <div class="lv-range">0 – 20 pts</div>
+          <div class="lv-bar" style="width: 20%;"></div>
+        </div>
+        <div class="level-item">
+          <div class="lv-num">2</div>
+          <div class="lv-icon">🔍</div>
+          <div class="lv-name">Ativo</div>
+          <div class="lv-range">21 – 40 pts</div>
+          <div class="lv-bar" style="width: 40%;"></div>
+        </div>
+        <div class="level-item">
+          <div class="lv-num">3</div>
+          <div class="lv-icon">🔧</div>
+          <div class="lv-name">Operacional</div>
+          <div class="lv-range">41 – 60 pts</div>
+          <div class="lv-bar" style="width: 60%;"></div>
+        </div>
+        <div class="level-item">
+          <div class="lv-num">4</div>
+          <div class="lv-icon">🔗</div>
+          <div class="lv-name">Sistêmico</div>
+          <div class="lv-range">61 – 80 pts</div>
+          <div class="lv-bar" style="width: 80%;"></div>
+        </div>
+        <div class="level-item">
+          <div class="lv-num">5</div>
+          <div class="lv-icon">🚀</div>
+          <div class="lv-name">Transformacional</div>
+          <div class="lv-range">81 – 100 pts</div>
+          <div class="lv-bar" style="width: 100%;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section" id="como-funciona">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag">✦ Como funciona</div>
+        <h2>3 passos simples</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h3>Responda o assessment</h3>
+          <p>35 perguntas objetivas sobre 7 dimensões da maturidade em IA. Leva cerca de 10 minutos.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h3>Receba seu diagnóstico</h3>
+          <p>Score de 0–100, nível de maturidade, radar chart por dimensão e análise de GAP.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h3>Evolua com um plano</h3>
+          <p>Recomendações personalizadas por dimensão e roadmap para atingir sua ambição.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section class="section" style="background: var(--bg-section);">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag">✦ Soluções Bizapp</div>
+        <h2>Do diagnóstico à transformação</h2>
+        <p>Com base no seu resultado, recomendamos as soluções mais adequadas para acelerar sua jornada de IA.</p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card" style="--prod-color: #8034AE;">
+          <div class="prod-tag">Pilar 1 — Readiness</div>
+          <h3>Preparação Estratégica</h3>
+          <p>Auditoria de licenças, avaliação de prontidão técnica e organizacional, políticas de segurança e estrutura do COE.</p>
+          <div class="prod-targets">
+            <span class="prod-target">Nível 1-2</span>
+            <span class="prod-target">Estratégia</span>
+            <span class="prod-target">Dados</span>
+          </div>
+        </div>
+        <div class="product-card" style="--prod-color: #953CCC;">
+          <div class="prod-tag">Pilar 2 — Advisory</div>
+          <h3>Workshops Estratégicos</h3>
+          <p>Sessões para C-Level, TI, áreas de negócio e inovação. Inclui Frontier Firm & AI Vision, Responsible AI e Casos de Uso & ROI.</p>
+          <div class="prod-targets">
+            <span class="prod-target">Nível 1-3</span>
+            <span class="prod-target">Liderança</span>
+            <span class="prod-target">Governança</span>
+          </div>
+        </div>
+        <div class="product-card" style="--prod-color: #AD46ED;">
+          <div class="prod-tag">Pilar 3 — Deploy</div>
+          <h3>Copilot Adoption FastTrack</h3>
+          <p>Adoção acelerada do Microsoft Copilot em 30-60 dias com metodologia AI-First e framework baseado nos pilares da Microsoft.</p>
+          <div class="prod-targets">
+            <span class="prod-target">Nível 1-3</span>
+            <span class="prod-target">Implementação</span>
+            <span class="prod-target">Talentos</span>
+          </div>
+        </div>
+        <div class="product-card" style="--prod-color: #CB61E8;">
+          <div class="prod-tag">Pilar 3 — Deploy</div>
+          <h3>Copilot Studio Catalyst</h3>
+          <p>Seu próprio agente de IA (MVP) em 4 semanas. Inclui design, integração com sistemas e go-live com monitoramento.</p>
+          <div class="prod-targets">
+            <span class="prod-target">Nível 2-4</span>
+            <span class="prod-target">Implementação</span>
+            <span class="prod-target">Escala</span>
+          </div>
+        </div>
+        <div class="product-card" style="--prod-color: #b06cde;">
+          <div class="prod-tag">Pilar 4 — COE</div>
+          <h3>Centro de Excelência</h3>
+          <p>Admin & Governance, Adoption & Change Management e Automation Coach. Governança por zonas, DLP, treinamentos e Citizen Development.</p>
+          <div class="prod-targets">
+            <span class="prod-target">Nível 3-5</span>
+            <span class="prod-target">Governança</span>
+            <span class="prod-target">Cultura</span>
+          </div>
+        </div>
+        <div class="product-card" style="--prod-color: #d07bf0;">
+          <div class="prod-tag">Sob Demanda</div>
+          <h3>Squad on Demand & Custom Projects</h3>
+          <p>Equipes especializadas para projetos customizados, integrações avançadas, orquestração generativa e agentes autônomos.</p>
+          <div class="prod-targets">
+            <span class="prod-target">Nível 3-5</span>
+            <span class="prod-target">Escala</span>
+            <span class="prod-target">ROI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Pronto para descobrir seu nível?</h2>
+      <p>Assessment gratuito, resultado imediato. Comece agora e transforme sua estratégia de IA.</p>
+      <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top: 8px;">
+        <button class="btn btn-primary btn-lg" onclick="startSurvey()">Iniciar Assessment Agora →</button>
+        <a href="https://outlook.office.com/bookwithme/user/ea5e67c4ddf64e17b5ccf6d7698fdfa0@bizapp.com.br?anonymous&ismsaljsauthenabled&ep=bwmEmailSignature" target="_blank" rel="noopener" class="btn btn-outline btn-lg">📅 Agendar com especialista</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-tagline">Your business. Our applications.</p>
+      <p>&copy; 2026 bizapp. Assessment de Maturidade em IA — Versão 2.0</p>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ===== SURVEY ===== -->
+<div class="survey-container" id="surveyContainer">
+  <header class="survey-header">
+    <div class="survey-header-inner">
+      <a href="#" class="logo" onclick="backToLanding(); return false;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA9QAAAEkCAYAAADO2Xm0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAFt9JREFUeNrs3f1VG8caB+BRTv4PtwLLFURUYFFBcAWRK7CpALkC4wrAFYArQFQgXAFKBVYq0N2xRrEOIbaQZr+f55w9yr0nETCzuzO/fWd3QwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA6YqAJaIPVajUsPoY/3JkHg5mWAgAAQIguQnSxXRbb19Vu4r/3odiOtB4AAFA2FWqaGqZHxcdtse0Tju+L7WQwGCy1ZKf2iWFYr1LYbNEibff6GwAAYB2eHlaHudSK3QjRadXBLvvDvNimKXgDAAD0MkSdrjLQkq3eB45SkN5HXPo/1YoAAEAfw9R0lcdYa7Y2TM8z9P/c/fQAAEDfAtVtpkA90Zq9DdNCNQAApftFE9BhQ03QOh+KbZTx++J3nWtWAAAEaqCz0sPEJiV89TtVagAABGqgy05b+t0AAAjUALV6VeJ3DzUvAAACNdBVZS7LfqV5AQAQqAGeb6EJAAAQqIGuui/xu//SvAAACNRAV31paVgHAECgBqjVTbEtS/jexWAwuNG8AAAI1EAnFaE3hun3JXz1mdYFAECgBroeqi+Kj6uMX3mhOg0AgEAN9CVUvwl5KtVnxXepTgMAAP2xWq1uV3lMtWar94PRnvvCdbENtSAAAGX7VRMATTQYDOKTuU9SOD4ttj+KbVRsR4/+1UXaPhfbTfHfLbQeAADQSyrUAABAG6hQA423Wq3Gxcf4B/9KrGYvB4PBTGvBs4+vp1Z+PMkx1py+qJP9IEtfD4uPYQt+1fv0Fg7gv86JmoAGDjK3PwlPu1qkrU9isPz70d+/TMun27gvxKXeH54x6YiD/sewfrq3CQD8eDJ/Hta3Uxwa4O7D93fIx88vXTkHZWrr2L6jdB6L24utc1orAvQOZo/6f5n2i0WfbsPpSV9vjvde9zUI1PQlUPP0BYb7NAjeN3mSW+wHk+Ljct8Bv/jbjnU5PHlsxYn9bQ2T+38m3sX2Vwphnap+pUA1TuHpVYdCVI7AvRl7Zl0JXlurp15thWh9vT7G75o+zwCBGoGanINfHPhumjLwperZ/MCJ6Pvi75nq3s6dHzaTVtWQ/dtwnoJeUyy2zkOtC1spRG8enHhqD3t2n9+05aKKvt7LMvX15zb1NQjUCNQcMvDdFNunOu+RK/aBd2G91PugCVvxN7zsaeA8T8fQsON/brwA9LHo5yuH7s77RwzS8xb066fQ8Kf2p7Z8W2wTe9bBNuPOTYPPq5u+tuLg8L4WrhGoQaDuhTiRjfcjX1U96MV3SYc8V///16cBOy2T/9DDCd+3V6yZnO20j0zD+oJLmybfH5v0EKy0zPfcOFXauBMvpjTiORhbFygnuia72L9X6fheaA7a7BdNAPyHYQpnD3ESnpa6VSXXzxr1pbPSxK+PYXrTz7cO2Z28aNnvGy+sxVcpPqSHFNZ5jB0V22Xa14Tp8sad85rGncd9/W38E6ZLHeffpb6+rKuvQaAGqhr0NhOcd5qjsc5Dv5cijrx7fufA0tbf+zquYEpLrasOWKfCVS3jzrzqCylbt0UY76ozMcdAoAb6MsH5kCa0Q83ROGNNEP7UBD+17MB+Pq/y4kmqVF4H987WIY4111VVMNNtM/Pgad11zzEcawjUQOeD2zzdR0izJp69b4M6qpct86Ujf8d5FRPvtMRb1ax+MeiW2t8HvqqRvHOMB+dyBGqg647S5GaiKepn4vGvyRj/bdmxvi5txUwK085xzTEqK2gJ042dYxjbEKiBzrsUqhsz+UBb7GLWwZCVvXKZzmvObc08vrMu/06rrYRpoRoEaqDWUD3WDLW61wTsYjAYxH1l0bE/a5gzVG89MZ9migHrOlNfH+X6LkoL1dfuqUagBvrAgFdvSPL+5e9cXPi5s46GrFwh+DJY6dB040wPpjvX1403DC5wIVADPXAULJmr20wTfLs/WDv8xGAwuCk+3nTwT5sculom/fdje0krvD3k/vn033rgXE+ObSjTr5oAyOQ0DnjFZF2gqccnQSB8VK3fOVRfFcfrIqxfNRb3mx8Fk1j1/1m7DkMznjQfL+y9POC/P7d3tMbmXdVv9HUvxP4yv6CZY6omoGniq1AyBYOrFDK66KnJ629hvewxpM86lrHNion6SYP2gZM+Bfyi3eZb+0DfvC/6euoM2oj98GhrP4zH8Yt0vhpX9Cu8iRcM9vi94+/4UGFTLdJ2tzl/ps9lute9Lf29Pd5s/vn39M/DCn6F/+1zIa34vb9WOE7G3+8+bX9vB8M2jVGP+nozD6myr4/bdGwA1BqoV3lMteUq3mf2Lr7+pdgeVtUYNWgfGPesv4+K7XrVL3NPgW3dOelDyeej+Z6/27uS99Wv6Vx82pdnTsSLFKld5yW267s9fq/Tivp6UtZr3Rra15OM4/dT3FpGI6lQ08hAHfJUMlSsnhjwwvpVMHGZZ1mD/EXR7mcN2QdO+rgEPQXM07CuHOSeuNe1+sEx3sFwnc5FkxK+/mWxbyxqOu88Fs9BH9O9633v7/MS2vjZK6PiRZ1Qzv3T96mvr8w1vj1I7DTzVy+Ktn0ZAPj5pEaFupJ2npRUJXpo0D4w1tOl7kN1VcRVpTsWtEqoYO5Ttcx+LnQOerKds68E2ON3mJdQkZ7o3SfnGV+btgoOcvOUb+ipeAU9Xem9yPzVw74scev7RCms7zc9rfhHx6q0++i6dS6aFR+xwjjL+LWvnrk/556kx/3z2EMan+zvOOZkfcr8HhcuRiX09ZXe/fc8Ix3bOQnUCNRA4wa8s5D/FToGvO4G6WFaGlv1u3pnadI61QudPA/Fhza9DvneI/7cc1DOfTn+DSeeOP/ToJUzgO7cf5kv+C5TXy/06n/2dTwe3mf8yqFWRaAGmjq5yVmpFqi7GabjMtr4wKdxhT82TljP4j2SqtK9CNVnmb7uuZPunOesM2F6JzlD1qjEfUNfH+4i/PzVe7v6TXMiUANNntzkGvBeaM5OBelRqkrHh8zUUZW+0Au9CdWxzxeZ9tvnBKdc+/XCMu+d+zr2c9svkt3oyZ36ehny3dLhgj2N86smADYDXjEBjZODSYavG2rRzoTpaVg/mbdKcfL1vmtBOt3nuf2O5lePJolH9rishrnC+TMI088/1ttqpjr9LF9C9c/cAIEaqNxdKOcVNrQv/MWAdxmqrwbEQPKm7fckpvaLAfr31IaqKv3wlyYAEKiB/lpogt4H6VgljRXpdxX/6GUK0jctbrtYffkjrKswqs0AIFAD0KMwPQ7rqvSw4h99k8L0soVtFivPb4VoABCoAehnkI5BMD5wbFLxj25tVTpdfIiV/LE9CAAEagD6GaZjZbXqd0pHraxKC9IAgEANIEgfpSBd9VNXF2H97tablrXXMKyr+J5SCwD8w3uoAfoXpuMDxx5qCIfxNVjHLQzTk+JjLkwDAI+pUAP0J0gPw7oqPa74Ry/Cenn3rIVtFttrYu8BAJ6iQg3QjzAdq9LzGsL0pio9a1l7HRXbXJgGAH5EhRqg20E6vtYpVllHFf/oRWhvVTreX35bQ5sBAC2jQg3Q3TA9DeuqdNXB8H1oYVV6ywdhGgDYhQo1QPeC9LimUHgf1lXp+xa3XVwaP7EXAQC7UKEG6E6Qjvf9xiBdx3Ll90WQPm55mB6G9YUIAICdqFADdCNMj8P6XulhxT+69VXpLZf2JABAoAboT5A+SkGwjnckx6r0tCPtOA7VPwF9GdYXJO7S/57Zo79xDzsAAjUApYfA0xSmjyr+0TH4xar0okPN+WdFATq23ef42bH2y7lfL7UCAAI1AGUFjmFYV/GqrkrHoBOr0hcdbNYy2/Km2D4V7XZj7wUAgRqA+sJ0fAr1eVCVztmmpyW151VYX4BY2HMBQKAGoL7QNwzr5d3jin90l6vSG7nv1+3Sg9oAAIEaoNVhelp8vA3VV6XjEuWzHlRYX2Vusxim3QcMAAI1ADUG6Vg5jVXpqp94vEyh0D2/z7MQpgGgX37RBACNC9JHqSo9ryFMxxD9smdhepzpe94L0wAgUANQX5gepyB9XvGPjkHwdREIXwuFe5tpgizcew6AQA3As4J0rErHV2HdFtuw4h/fx6p0dp7mnc3fmgCAtnAPNUD9YTq+tulDDUE6BsB4z+9MLwAAPJ8KNUB9QTpWpa+Lf7yuIUzH12AdC9MAAPtToQaoJ0zHqnR8gnfVr8JaBFVpAIAsVKgBqg3Sw2KL90lf1xCmVaUBADJSoQaoLky/C+und6tKAwB0gAo1QPlBepSq0h9qCNPx3cgvhWkAgPxUqAHKDdPTUP07paP4Lt9YlfZOX9rmN00AgEAN0O8gPQrrh46NavjxsSo91Qu01EgTACBQQ/1UOUxk6wjScUl3rEi/q+HHq0rTBUNNAJ3zQhPQVe6hpolyhYFTTflsv2uCg8L0uPiY1xCml8V2VgTpY2G61v4XBA9vwyOBulfGmkBf1zRHBIGaTvs70/cM0/2r7C7XRYi7voWAYosPHLutIQzMwvpVWBd2X+HAOYgWnTcnGb9OyGp2X48zjo1/a1EEaqh2YDxPryri5wNebKcjLfHsdosB4CHUV5U+KbaFnmjEOeetpjzYn7m+yJPtG33e3Nwak/N8SHN9yPhdxjsEathB7knQh2Lwvk4DOE9PboaZJzezHrRZrEpfF/8Yt6MajhFV6eZNxuPr0S41597H1Dio8vclTGddzePiSaP7O/fDOa1GQKCGHQbGZQknzG9VxLgE3H2OT05usobCrk9u0lLFh1D98lRV6XLkvEVh4gLe3uehnBcjBKxm9vMwhWkBqwfHdLroPMk8R9TfCNSwo48lfOdmidlDmvCe9n3SmypCD5knN7MOt1e8L/82Tfyr3nduiu2lqnRpbZvT9gU8wXq3MJ37+QMLLdu4cDUtYbzp9JjTgb7OfdH5RgsjUMPzTppl3hMVT/LxyunXGJDi/cMpXPZlwBulK8e3JQTDzx1ts3iPdHyCd9X7STwOXhdB+nVavUFmqeKRO4BtLuDFc8xluteefx9Xp+m4yh2y7rRuI4LVJI01X0Pe24q2fdLajejr07S8+yH1dRkXEz9rbZrIe6hp6gR3WZyY34e8D7L4L+NNSCp+Zvy4T9tfYX3le9n2JUZpmV3c/kgXE4Yl/rirrk0Uwvriy7iGHx8vLL0RpCvxqcQJ/ySsl4Iv0zklTgpnfV22v3Wv9J8lnotUsqo9R45SgIqfL9LnqIIfv7AEuJa+3sydquzrpeOaxuYWTUDDT95lVC72HrjD9ypWk6sfv4fvV4aHodrXOF0Vk5s3Gfr9NlOAPTnkfu6t+/2GFffhMgVpk4dqJ4oPodql/JvnRcTzyl/p/7sP3Xhi8WirLX97FLjKdhNXdDyz/6ehvAsqlCeeJ6+e2dfjdF6nXbLML6AMKtQ0frAM5SxL3sd2OB3rmifDwfuOBazrGsJ0SPv7dVoxwW773qzYPu57AaXiVTHb/exckt9HTdALi6BiaX4BDeAeahotLeU60xLtmMR2bAlrvGd6pFtbIQbTeCvDbXoC+77nm4vgAUdtN/MKpd44czuM+QUI1LDbJPcqrCvVNNd90U/TrvwxqTr9Vre20uWBDxiMS4VN0ttLFasfbtwSY34BAjUI1V0Rw8dJx/6m7fs/aZ+9l22niteJUN1KF6rT/QhY5gO9ml+81gwI1JA3VJvoNjBMd3DZ3VjXttooPVBu33PNvXNNK0OW6nQ/xhxvPujX/GKhKRCoIW+onhUfL4P7HJs02HllCY0M1Qeeazah2v7dnnORkGXMQV+DQA07THTje6HjRPcsqCDVJQ5yxx0e7Ba6uN+B+lGodq9ms49VYbofY85LAatXx7S+RqCGCoJ1fCJvrFZfaI1KXYTuL8MykLM5zyzTO409rKyZx+mxiXf3x5yij49dNOmFG8c0AjXUM9k9S8H6SouUPnmNQbrzrypJg7kBne194iadZ9ynK2RRjdlmzNEUnbcottfx4qVjGoEa6pvsLootPvXzf2nCu9AqWQe6N2nyOmvh774vwan9+23u88wyvb7FBbx6Q9axkNWLMefEU9t709cvvQYNgRqaE6y/TXjjyTmsl2ia9B42cX2dBrqq2/Euw3csD1mWngZ3+097lbbCYOsC3qZiraJSTX9uQpbVI90Uz7knNY05VD+/eKOv6Uz+0AR03Wq1iu8TPi22P8L6dUjeL/zjSeunOLGp8x7pos/iA6XmB37NVQo9h/4ul8XHxK7RKot0Ua3qc8yfwSvXcouT7U9lVyqLPpwWH+eau5YQ/TmNOcuKjtd4jN5q+lpC9Oe65xcgUEO+wXQTrkc9b45FGuRiRXjWpEGu6KfrFFL2ESdmx7n+HpPt1nld1/LB9P7ruN++OmD/7bNlCll3FYcsx3g1fXu/Nd7MapwDCNTVBOi71Ocz90YjUEP3A3YM1r8X2zB0t8I0SxOaL+mf75s8wKWq3+UeoaSU91emoBQn3BNHTaNdNOn+2nR+GaeAHc8zVsj8+7y02JyX6lrOLVBnswjfn19wtxWiF025YCtQl9bX/xzPKtAI1MAmzG0mv5sq9m+h2RXtu0eh8tvEtO0PdUnLvzcVv8c2/bGZhMflZFdlXijYqkD+ISA1Sqxqfmz6/r51bhmmLfxg327bvrU9wQ6PzkdfHv07i4atiMkVqK/C+raZvrhvW+UxY6CO406fHo4nKAMAAE8H6lUeU63Z/ECdqa9VuYFvPOUbAAAABGoAAAAQqAEAAECgBgAAAIEaAAAABGoAAABAoAYAAACBGgAAAARqAAAAEKgBAABAoAYAAAAEagAAABCoAQAAQKAGAAAAgRoAAAAEagAAAECgBgDY1X2m71lqysbL1Ud3mhIAAOi91Wp1tMpjqDVb0d9fM/T1qZYEAABYh6zLAwPWtVZsTV9PD+zruVYEAAD4HrJilXq+b8CK/71WbFV/3+7Z1w9WIgAAADwdqqcpNO0apCdarrX9/dy+nrpwAjw20AQAAP8KW8PiY/jk5GkwmGmhTvV1DMkjfQ0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHz3fwEGANaz8rkZVe5aAAAAAElFTkSuQmCC" alt="bizapp"></a>
+      <button class="survey-close" onclick="backToLanding()" title="Voltar">✕</button>
+    </div>
+  </header>
+  <div class="survey-progress" id="surveyProgress" style="display:none;">
+    <div class="survey-progress-inner">
+      <div class="progress-info">
+        <span class="dim-name" id="progressDimName"></span>
+        <span class="progress-count" id="progressCount"></span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
+      <div class="progress-dots" id="progressDots"></div>
+    </div>
+  </div>
+  <div id="surveyContent"></div>
+</div>
+
+<!-- ===== RESULTS ===== -->
+<div class="results-container" id="resultsContainer">
+  <header class="header">
+    <div class="container">
+      <a href="#" class="logo" onclick="backToLanding(); return false;"><img src="data:image/png;base64,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" alt="bizapp"></a>
+      <div class="header-cta">
+        <button class="btn btn-outline btn-sm" onclick="startSurvey()">Refazer Assessment</button>
+      </div>
+    </div>
+  </header>
+  <div class="results-wrap" id="resultsContent"></div>
+</div>
+
+<script>
+// ===== DATA =====
+const DIMENSIONS = [
+  {
+    id: 1, name: 'Estratégia de IA', icon: '🧭', type: 'maturity',
+    color: '#8034AE',
+    questions: [
+      { text: 'Como a IA está inserida na estratégia corporativa?', tooltip: 'Avalie se a IA aparece no plano estratégico, nos OKRs e nas prioridades do negócio. No conceito de <strong>Frontier Firm</strong> da Microsoft, empresas líderes integram IA generativa (Microsoft 365 Copilot, Copilot Studio, Azure AI Foundry) no core do negócio, e não apenas como ferramenta isolada. Pergunte-se: existe um <strong>AI Vision</strong> formal e um roadmap pluri-anual?', options: ['Não está no radar','Em discussão inicial','Plano definido com objetivos','IA é core da estratégia e dos OKRs'] },
+      { text: 'Qual o envolvimento da liderança (C-Level) com IA?', tooltip: 'Considere se CEO, CFO, COO e Board pautam IA recorrentemente. Em organizações maduras, o C-Level patrocina iniciativas como adoção de <strong>Microsoft 365 Copilot</strong>, define metas de produtividade habilitadas por IA e revisa indicadores nas reuniões executivas. Conselhos de IA (AI Council) ajudam a institucionalizar essa agenda.', options: ['Nenhum envolvimento','Interesse pontual','Patrocinadores ativos','IA é agenda permanente do CEO/Board'] },
+      { text: 'Existe budget e papel formal responsável pela estratégia de IA?', tooltip: 'Avalie se há orçamento dedicado e liderança formal (CDO, CAIO, Head of AI). Empresas avançadas separam <strong>OPEX</strong> (licenças Microsoft 365 Copilot, Azure OpenAI) de <strong>CAPEX</strong> (projetos de Copilot Studio, agentes customizados, Azure AI Foundry) e designam um líder com accountability sobre roadmap, ROI e governança.', options: ['Sem budget e sem responsável','Verba experimental e responsabilidade informal','Linha orçamentária própria com papel designado','Investimento estratégico com liderança dedicada (CDO/CAIO)'] }
+    ]
+  },
+  {
+    id: 2, name: 'Governança & Ética', icon: '🛡️', type: 'maturity',
+    color: '#953CCC',
+    questions: [
+      { text: 'Possui políticas formais de IA responsável?', tooltip: 'Verifique se existem políticas baseadas em frameworks como o <strong>Microsoft Responsible AI Standard</strong> (princípios de fairness, reliability, privacy, inclusiveness, transparency e accountability). Empresas maduras formalizam diretrizes de uso de Copilot, agentes e LLMs, com aprovação do jurídico e comunicação para todas as áreas.', options: ['Não existem','Em desenvolvimento','Política aprovada e comunicada','Governança integrada e auditada'] },
+      { text: 'Como trata conformidade com LGPD e regulações de IA?', tooltip: 'Considere o uso de <strong>Microsoft Purview</strong> para classificação, DLP e auditoria de dados sensíveis em interações com Copilot. Empresas avançadas mapeiam onde dados pessoais trafegam, aplicam <strong>Sensitivity Labels</strong>, monitoram com <strong>Compliance Manager</strong> e acompanham frameworks emergentes (EU AI Act, regulamentações brasileiras de IA).', options: ['Sem preocupação ativa','Consciente, mas passiva','Adequação em curso','Totalmente conforme e monitorado'] },
+      { text: 'Existe gestão de riscos, viés e explicabilidade dos modelos?', tooltip: 'Avalie o uso de ferramentas como <strong>Azure AI Content Safety</strong>, <strong>Prompt Shields</strong> e <strong>Responsible AI Dashboard</strong> no Azure Machine Learning para detectar viés, gerar explicações (XAI) e monitorar drift. Em produção, equipes maduras realizam <strong>red teaming</strong> de modelos e revisões periódicas de fairness.', options: ['Não considerado','Preocupação emergente','Processo de validação implantado','XAI e gestão contínua de riscos de IA'] },
+      { text: 'É transparente com stakeholders sobre o uso de IA?', tooltip: 'Considere se clientes, colaboradores e parceiros sabem quando estão interagindo com IA (princípio da <strong>transparência</strong> do Responsible AI Standard). Em maturidade alta, há cards de modelo, system messages explícitas em agentes Copilot Studio e relatórios públicos de uso responsável de IA.', options: ['Sem transparência','Comunicação reativa','Comunicação proativa','Transparência radical e relatórios públicos'] }
+    ]
+  },
+  {
+    id: 3, name: 'Pessoas & Competências', icon: '🧠', type: 'maturity',
+    color: '#AD46ED',
+    questions: [
+      { text: 'Quantos profissionais com skills de IA/ML internamente?', tooltip: 'Considere desde <strong>Citizen Developers</strong> (que usam Power Platform e Copilot Studio sem código profundo) até cientistas de dados com Azure ML. Empresas maduras combinam um <strong>Centro de Excelência (COE)</strong> central com champions distribuídos nas áreas, atuando como multiplicadores de IA.', options: ['Nenhum','1–3 profissionais','Equipe dedicada (4–15)','Centro de Excelência (COE) estruturado'] },
+      { text: 'A empresa investe em treinamento e capacitação em IA?', tooltip: 'Avalie programas estruturados — desde <strong>AI Literacy</strong> básico até trilhas avançadas em <strong>Microsoft Learn</strong>, certificações (AI-900, AI-102, AI-3003), workshops de prompt engineering e bootcamps de Copilot Studio. Empresas líderes oferecem trilhas por persona (executivos, gestores, usuários, devs).', options: ['Não há programas','Iniciativas isoladas','Programa estruturado por função','Cultura de aprendizado contínuo'] },
+      { text: 'As decisões de negócio são tomadas com base em dados?', tooltip: 'Considere o uso de <strong>Microsoft Fabric</strong>, <strong>Power BI</strong> e <strong>Copilot for Power BI</strong> para democratizar análises. Em culturas data-driven, decisões usam dashboards em tempo real, e Copilot ajuda usuários de negócio a fazer perguntas em linguagem natural sobre os dados — sem depender de TI.', options: ['Decisões por intuição','Dados usados pontualmente','Cultura data-driven emergente','Totalmente data-driven em todos os níveis'] },
+      { text: 'Como gerencia atração, retenção e mudança cultural gerada pela IA?', tooltip: 'Avalie o uso de <strong>Microsoft Viva</strong> (Insights, Learning, Engage) para acompanhar adoção e bem-estar, e práticas formais de <strong>change management</strong> (ADKAR, Prosci). Empresas maduras posicionam-se como <strong>employer brand de IA</strong>, comunicando que a IA aumenta — e não substitui — o talento humano.', options: ['Sem gestão de mudança','Dificuldade e comunicação básica','Plano estruturado de change management','Employer brand em IA e transformação cultural'] }
+    ]
+  },
+  {
+    id: 4, name: 'Dados', icon: '🗄️', type: 'maturity',
+    color: '#CB61E8',
+    questions: [
+      { text: 'Como avalia a qualidade e disponibilidade dos dados?', tooltip: 'IA generativa é tão boa quanto os dados que a alimentam. Avalie se sua empresa usa <strong>Microsoft Fabric</strong> e <strong>OneLake</strong> para unificar dados, com práticas de <strong>data quality</strong>, deduplicação e enriquecimento. O Copilot só entrega valor real quando "ancorado" (grounded) em dados corporativos confiáveis via SharePoint, Dataverse ou Fabric.', options: ['Dados fragmentados','Parcialmente estruturados','Boa estruturação e qualidade','Dados como ativo estratégico'] },
+      { text: 'Existe política formal de governança de dados?', tooltip: 'Considere o uso de <strong>Microsoft Purview</strong> para catalogação, lineage, classificação e DLP. Empresas maduras têm <strong>data stewards</strong>, glossário de negócio, e políticas claras sobre o que pode (ou não) ser usado para treinar/contextualizar agentes de IA — incluindo segregação por <strong>Sensitivity Labels</strong>.', options: ['Não existe','Em construção','Política documentada','Governança centralizada e auditada'] },
+      { text: 'Qual o nível de integração entre sistemas e dados?', tooltip: 'Avalie integrações com <strong>Microsoft Graph</strong>, conectores do <strong>Power Platform</strong> (700+ conectores nativos) e arquiteturas de <strong>Real-Time Intelligence</strong> no Fabric. Agentes Copilot Studio entregam mais valor quando consomem dados em tempo real de ERPs, CRMs e sistemas legados via APIs.', options: ['Sem integração','Integrações pontuais','Plataforma de integração','Dados em tempo real e API-first'] }
+    ]
+  },
+  {
+    id: 5, name: 'Tecnologia & Infraestrutura', icon: '⚙️', type: 'maturity',
+    color: '#b06cde',
+    questions: [
+      { text: 'Qual a capacidade tecnológica para treinar/executar IA?', tooltip: 'Avalie sua infraestrutura cloud, especialmente <strong>Microsoft Azure</strong> com serviços como <strong>Azure Machine Learning</strong>, <strong>Azure OpenAI Service</strong> e <strong>Azure AI Foundry</strong>. Empresas maduras têm práticas de <strong>MLOps</strong> (CI/CD para modelos), versionamento, monitoramento e deployment automatizado em produção.', options: ['Sem infraestrutura específica','Cloud básica','Cloud com serviços de IA','Plataforma MLOps madura'] },
+      { text: 'Possui ferramentas e plataformas adequadas para IA generativa e agentes?', tooltip: 'A stack completa Microsoft inclui: <strong>Microsoft 365 Copilot</strong> (produtividade), <strong>Copilot Studio</strong> (agentes low-code), <strong>Azure AI Foundry</strong> (modelos pro-code, RAG, multi-agent), <strong>Azure OpenAI</strong> (GPT-4, GPT-5) e <strong>Power Platform</strong>. Avalie se sua empresa tem licenciamento e governança para todas essas camadas.', options: ['Não possui','Em avaliação','Implementação parcial (ex: Copilot)','Stack completa (Copilot, Studio, Foundry)'] }
+    ]
+  },
+  {
+    id: 6, name: 'Segurança & Risco de IA', icon: '🔒', type: 'maturity',
+    color: '#d07bf0',
+    questions: [
+      { text: 'Como trata segurança específica de modelos de IA (prompt injection, vazamento de dados)?', tooltip: 'Considere ferramentas específicas para riscos de IA: <strong>Azure AI Content Safety</strong> com <strong>Prompt Shields</strong> (proteção contra prompt injection direta e indireta), <strong>Microsoft Defender for Cloud</strong> (com cobertura para AI workloads), <strong>Microsoft Purview DSPM for AI</strong>, e arquiteturas <strong>Zero Trust</strong> aplicadas a agentes que acessam dados sensíveis.', options: ['Sem controles específicos','Controles básicos genéricos','Políticas definidas para IA','Privacy by design e Zero Trust para IA'] },
+      { text: 'Existe processo de validação e monitoramento contínuo de modelos?', tooltip: 'Avalie o uso de <strong>Azure AI Foundry Evaluation</strong>, <strong>Application Insights</strong> para agentes Copilot Studio e dashboards de qualidade conversacional. Empresas maduras monitoram <strong>drift</strong> (mudança de comportamento), métricas de groundedness, taxa de respostas seguras e fazem <strong>red teaming</strong> recorrente.', options: ['Sem validação','Validação pontual','Processo formal de validação','Monitoramento contínuo (drift, qualidade, viés)'] }
+    ]
+  },
+  {
+    id: 7, name: 'Adoção & Operações', icon: '🚀', type: 'maturity',
+    color: '#9a5cb5',
+    questions: [
+      { text: 'Quantos projetos de IA estão em produção gerando valor?', tooltip: 'Considere todos os tipos: licenças <strong>Microsoft 365 Copilot</strong> ativas (Word, Excel, Outlook, Teams), agentes em <strong>Copilot Studio</strong> (atendimento, RH, vendas), automações em <strong>Power Automate</strong> com IA, modelos customizados em <strong>Azure ML</strong>. Empresas maduras têm um <strong>portfólio</strong> distribuído entre múltiplas áreas, não só TI.', options: ['Nenhum','1–2 pilotos','3–10 projetos','IA distribuída em toda a empresa'] },
+      { text: 'Usa IA generativa (Copilot, LLMs, agentes) nos processos de negócio?', tooltip: 'O <strong>Microsoft 365 Copilot</strong> integra-se nativamente a Word, Excel, PowerPoint, Outlook e Teams. <strong>Copilot Studio</strong> permite criar agentes próprios (Citizen ou Pro Code) com RAG sobre dados corporativos. Empresas avançadas têm estratégia formal de adoção, casos de uso priorizados por ROI e medição contínua.', options: ['Não usa','Uso informal e individual','Projetos formais por área','Estratégia corporativa de GenAI'] },
+      { text: 'Quão eficiente é em escalar IA de piloto para produção?', tooltip: 'Empresas maduras usam <strong>MLOps</strong> com Azure ML e <strong>LLMOps</strong> com Azure AI Foundry — pipelines automatizados de teste, evaluation, deployment e rollback. O <strong>Power Platform Center of Excellence (CoE) Starter Kit</strong> ajuda a escalar agentes Copilot Studio com governança e observabilidade desde o piloto até produção.', options: ['Sem experiência','Escalou com dificuldade','Processo moderado e replicável','Escala eficiente com MLOps'] }
+    ]
+  },
+  {
+    id: 8, name: 'Resultados & ROI', icon: '📈', type: 'maturity',
+    color: '#a64cc4',
+    questions: [
+      { text: 'Consegue quantificar o retorno dos investimentos em IA?', tooltip: 'Avalie o uso do <strong>Copilot Dashboard</strong> (no Microsoft 365 admin center) e do <strong>Microsoft Viva Insights</strong> para medir adoção, horas economizadas e impacto na produtividade. Empresas maduras combinam métricas quantitativas (tempo economizado, redução de retrabalho) com qualitativas (NPS, satisfação) e reportam ROI ao Board com cadência trimestral.', options: ['Não mensuramos','Estimativas qualitativas','KPIs definidos e acompanhados','ROI comprovado e reportado ao Board'] },
+      { text: 'A IA contribuiu para resultados financeiros e redução de custos?', tooltip: 'Considere ganhos diretos (automação com <strong>Power Automate</strong> + <strong>Copilot Studio</strong>, redução de FTEs em tarefas repetitivas) e indiretos (faster time-to-market, melhor decisão com <strong>Power BI</strong> + Copilot). Empresas avançadas conectam IA a KPIs financeiros como margem operacional, CAC, LTV e cost-to-serve.', options: ['Sem impacto','Impacto marginal','Impacto moderado','Impacto estratégico e sistêmico'] },
+      { text: 'A IA gerou diferenciais competitivos e melhorou experiência do cliente?', tooltip: 'Avalie diferenciais como atendimento 24/7 com agentes em <strong>Copilot Studio</strong>, personalização em escala com <strong>Azure AI</strong>, hyper-personalização em vendas e novos modelos de negócio habilitados por IA. Empresas líderes usam IA para criar experiências únicas, não apenas otimizar processos existentes.', options: ['Sem diferencial','Experimentos iniciais','Algum diferencial em CX','Liderança de mercado e personalização em escala'] }
+    ]
+  },
+  {
+    id: 9, name: 'Sua Visão de Futuro', icon: '🎯', type: 'ambition',
+    color: '#CB61E8',
+    questions: [
+      { text: 'O que mais move sua empresa a investir em IA agora?', tooltip: 'Reflita sobre o driver principal: eficiência operacional, paridade competitiva, crescimento ou liderança. No relatório <strong>Work Trend Index</strong> da Microsoft, empresas <strong>Frontier Firms</strong> investem em IA para liderar mercados — não apenas para reduzir custos. Sua resposta ajuda a calibrar o ritmo e a ambição do roadmap recomendado.', options: ['Controlar custos','Acompanhar o mercado','Crescer e inovar','Liderar e definir tendências'] },
+      { text: 'Imagine sua empresa daqui a 2 anos. Como a IA está presente?', tooltip: 'Visualize cenários reais: tarefas isoladas automatizadas, times potencializados com <strong>Microsoft 365 Copilot</strong> no dia a dia, processos redesenhados com agentes em <strong>Copilot Studio</strong>, ou novos produtos/serviços habilitados por <strong>Azure AI Foundry</strong>. Empresas líderes pensam em IA como camada estratégica, não apenas ferramenta.', options: ['Algumas tarefas automatizadas','Times mais produtivos com Copilot','Processos redesenhados com IA no centro','IA como diferencial de negócio'] },
+      { text: 'Como sua empresa lida com mudanças profundas quando há ganho estratégico claro?', tooltip: 'Avalie o apetite cultural para transformação. Adoção de IA generativa exige <strong>change management</strong> robusto (ADKAR/Prosci) e disposição para repensar fluxos de trabalho. <strong>Frontier Firms</strong> equilibram experimentação com governança — abraçam mudanças quando o caso de negócio é sólido.', options: ['Preferimos mudanças graduais','Aceitamos mudanças moderadas com casos comprovados','Abraçamos transformações significativas','Somos agentes de disrupção'] },
+      { text: 'Que resultado de IA geraria mais valor nos próximos 12 meses?', tooltip: 'Considere o impacto de cada cenário: redução de retrabalho com <strong>Power Automate</strong>, ganho de produtividade com <strong>Microsoft 365 Copilot</strong>, agentes autônomos 24/7 em <strong>Copilot Studio</strong> e <strong>Azure AI Foundry</strong>, ou novos modelos de negócio. Sua resposta orienta priorização e onde investir primeiro.', options: ['Reduzir retrabalho e erros','Aumentar produtividade com Copilot','Criar agentes que operam 24/7','Lançar novos produtos/modelos de negócio habilitados por IA'] },
+      { text: 'Qual o nível de investimento que sua empresa está disposta a fazer em IA?', tooltip: 'Avalie capacidade orçamentária — desde uso de licenças <strong>M365 Copilot</strong> existentes, até investimento em <strong>Azure AI Foundry</strong>, agentes customizados e plataforma <strong>MLOps</strong>. Empresas maduras separam OPEX (licenças) de CAPEX (projetos) e tratam IA como investimento estratégico, não despesa.', options: ['Mínimo — ferramentas disponíveis','Projetos pontuais conforme surgem','Programa estruturado com orçamento dedicado','Investimento estratégico de longo prazo'] },
+      { text: 'Qual o horizonte de retorno esperado dos investimentos em IA?', tooltip: 'Iniciativas de quick win com <strong>Microsoft 365 Copilot</strong> tendem a mostrar ROI em 3-6 meses (produtividade). Agentes em <strong>Copilot Studio</strong> integrados a sistemas críticos demandam 6-12 meses. Plataformas customizadas em <strong>Azure AI Foundry</strong> e novos modelos de negócio são apostas de 1-3 anos com payoff exponencial.', options: ['Retorno imediato (≤6 meses)','Retorno de curto prazo (6–12 meses)','Retorno de médio prazo (1–2 anos)','Aposta estratégica de longo prazo'] },
+      { text: 'Que papel sua empresa quer ocupar no mercado em relação à IA?', tooltip: 'Posicione sua ambição entre seguidor (espera maturidade do mercado), adotante consciente (segue boas práticas), inovador ativo (testa novas capacidades antes da concorrência) ou referência (define padrões do setor). <strong>Frontier Firms</strong> da Microsoft assumem postura de liderança e participam de programas de early access.', options: ['Seguidor cauteloso','Adotante consciente','Inovador ativo','Referência e formador de tendências'] },
+      { text: 'Qual sua tolerância a riscos para acelerar adoção de IA?', tooltip: 'A Microsoft oferece controles para mitigar riscos em qualquer perfil: <strong>Azure AI Content Safety</strong>, <strong>Prompt Shields</strong>, <strong>Microsoft Purview</strong> e <strong>Defender for Cloud</strong>. Empresas com maior tolerância usam <strong>red teaming</strong> e experimentação controlada; mais conservadoras priorizam pilotos com guardrails fortes antes de escalar.', options: ['Aversão a riscos','Riscos calculados e pontuais','Disposição moderada','Alta tolerância para inovar'] },
+      { text: 'Como vê o equilíbrio entre IA e talento humano nos próximos anos?', tooltip: 'A Microsoft posiciona IA como amplificador humano — <strong>"AI + humans"</strong>, não substituição. <strong>Microsoft 365 Copilot</strong> aumenta produtividade individual; agentes <strong>Copilot Studio</strong> liberam tempo de equipes para tarefas estratégicas. Sua resposta indica como será a comunicação interna e a estratégia de upskilling com <strong>Microsoft Viva Learning</strong>.', options: ['IA apoia tarefas pontuais','IA aumenta produtividade do time','IA + humanos como parceiros estratégicos','IA redefine modelos de trabalho'] },
+      { text: 'Qual a importância da IA para inovação em produtos e serviços?', tooltip: 'Pense além de eficiência interna: <strong>Azure AI Foundry</strong> permite embedar IA em produtos próprios, <strong>Azure OpenAI Service</strong> habilita features generativas em apps, e <strong>Copilot Studio</strong> cria experiências conversacionais para clientes. Empresas líderes diferenciam-se com IA na proposta de valor, não só nos bastidores.', options: ['Pouco relevante','Relevante para eficiência','Importante para diferenciação','Central para novos modelos de negócio'] },
+      { text: 'Qual seu compromisso com IA responsável e ética nas decisões de negócio?', tooltip: 'Considere se sua empresa segue o <strong>Microsoft Responsible AI Standard</strong> (princípios de fairness, accountability, transparency), publica relatórios de uso responsável de IA e participa de fóruns do setor. Empresas líderes em IA responsável atraem talento, ganham confiança de clientes e antecipam-se a regulações como o <strong>EU AI Act</strong>.', options: ['Conformidade mínima','Princípios em construção','Compromisso público e processos formais','Liderança em IA responsável no setor'] }
+    ]
+  }
+];
+
+const LEVELS = [
+  { min: 0, max: 20, num: 1, name: 'Consciente', icon: '🌱', color: '#9a5cb5' },
+  { min: 21, max: 40, num: 2, name: 'Ativo', icon: '🔍', color: '#8034AE' },
+  { min: 41, max: 60, num: 3, name: 'Operacional', icon: '🔧', color: '#953CCC' },
+  { min: 61, max: 80, num: 4, name: 'Sistêmico', icon: '🔗', color: '#AD46ED' },
+  { min: 81, max: 100, num: 5, name: 'Transformacional', icon: '🚀', color: '#CB61E8' }
+];
+
+const GAP_MESSAGES = {
+  0: 'Ambição alinhada à maturidade atual — foco em consolidar a posição conquistada e amadurecer práticas.',
+  1: 'Distância gerenciável — um plano bem executado de 6 a 12 meses pode fechar esse GAP com ganhos consistentes.',
+  2: 'Ambição clara — será necessário um roadmap estruturado de 12 a 18 meses, com priorização das dimensões mais críticas.',
+  3: 'Grande ambição — recomendamos fortalecer os fundamentos antes de acelerar, estruturando governança, dados e talentos.',
+  4: 'Visão transformadora — a jornada será passo a passo, com investimentos estratégicos de longo prazo e impacto sistêmico.'
+};
+
+// ===== MATRIZ DE PESOS POR SETOR (V2.1) =====
+// Pesos % por dimensão (id 1..8) — fonte: Matriz_Pesos_IA_por_Setor.xlsx
+const SECTOR_WEIGHTS = {
+  'tecnologia':    { 1: 15, 2: 8,  3: 15, 4: 14, 5: 14, 6: 8,  7: 14, 8: 12 },
+  'financeiro':    { 1: 8,  2: 18, 3: 10, 4: 14, 5: 12, 6: 18, 7: 10, 8: 10 },
+  'saude':         { 1: 8,  2: 16, 3: 14, 4: 16, 5: 10, 6: 18, 7: 8,  8: 10 },
+  'varejo':        { 1: 12, 2: 8,  3: 10, 4: 16, 5: 12, 6: 8,  7: 16, 8: 18 },
+  'industria':     { 1: 8,  2: 10, 3: 12, 4: 12, 5: 14, 6: 16, 7: 14, 8: 14 },
+  'agronegocio':   { 1: 8,  2: 8,  3: 10, 4: 18, 5: 16, 6: 8,  7: 14, 8: 18 },
+  'educacao':      { 1: 10, 2: 14, 3: 20, 4: 10, 5: 10, 6: 14, 7: 14, 8: 8  },
+  'energia':       { 1: 8,  2: 12, 3: 10, 4: 14, 5: 14, 6: 20, 7: 10, 8: 12 },
+  'logistica':     { 1: 8,  2: 8,  3: 10, 4: 16, 5: 14, 6: 8,  7: 18, 8: 18 },
+  'governo':       { 1: 8,  2: 20, 3: 14, 4: 14, 5: 10, 6: 18, 7: 8,  8: 8  },
+  'outro':         { 1: 12.5, 2: 12.5, 3: 12.5, 4: 12.5, 5: 12.5, 6: 12.5, 7: 12.5, 8: 12.5 }
+};
+
+function normalizeSector(s) {
+  if (!s) return 'outro';
+  const v = s.toLowerCase().trim();
+  if (v.indexOf('tecnologia') >= 0) return 'tecnologia';
+  if (v.indexOf('financ') >= 0 || v.indexOf('banking') >= 0 || v.indexOf('bank') >= 0) return 'financeiro';
+  if (v.indexOf('saude') >= 0 || v.indexOf('saúde') >= 0 || v.indexOf('health') >= 0) return 'saude';
+  if (v.indexOf('varejo') >= 0 || v.indexOf('retail') >= 0) return 'varejo';
+  if (v.indexOf('industri') >= 0 || v.indexOf('manufat') >= 0) return 'industria';
+  if (v.indexOf('agro') >= 0) return 'agronegocio';
+  if (v.indexOf('educa') >= 0) return 'educacao';
+  if (v.indexOf('energia') >= 0 || v.indexOf('utilities') >= 0) return 'energia';
+  if (v.indexOf('logisti') >= 0 || v.indexOf('transporte') >= 0) return 'logistica';
+  if (v.indexOf('governo') >= 0 || v.indexOf('público') >= 0 || v.indexOf('publico') >= 0) return 'governo';
+  return 'outro';
+}
+
+const RECOMMENDATIONS = {
+  1: {
+    1: 'Comece com os <strong>Advisory Workshops para C-Level</strong> da Bizapp — sessões como "Frontier Firm & AI Vision" e "AI Concepts & Business Value" alinham a liderança sobre o potencial da IA generativa com casos de uso reais do seu setor.',
+    2: 'Participe do workshop <strong>Responsible AI for Executives</strong> da Bizapp, que aborda princípios éticos Microsoft, riscos e políticas para uso transparente e responsável da IA. Primeiro passo essencial para qualquer governança.',
+    3: 'Inicie com o <strong>AI Literacy Program</strong> da Bizapp e a <strong>Academia Bizapp</strong> — trilhas de capacitação contínua por função e tecnologia (M365, Sales, Service, Studio), com foco em segurança, produtividade e inovação para toda a equipe.',
+    4: 'Utilize o <strong>Readiness da Bizapp</strong> para fazer uma auditoria completa do ambiente Microsoft e uma avaliação de prontidão técnica. Isso mapeia licenças, segurança e infraestrutura como base para qualquer iniciativa de dados e IA.',
+    5: 'Faça o <strong>Readiness Técnico</strong> da Bizapp para mapear sua infraestrutura atual (cloud, M365, Power Platform) e identificar lacunas para suportar IA generativa, agentes e MLOps.',
+    6: 'Comece com a <strong>Prontidão em Privacidade e Segurança</strong> da Bizapp — workshop que aborda riscos específicos de IA (prompt injection, vazamento de dados) e estabelece controles iniciais Zero Trust.',
+    7: 'Comece com o <strong>Copilot Adoption FastTrack</strong> da Bizapp para adoção acelerada em 30-60 dias, e use a <strong>AI Assisted Ideation</strong> — sprints de 2 semanas que identificam oportunidades de alto impacto e baixa complexidade para pilotos rápidos.',
+    8: 'Os <strong>Advisory Workshops para Áreas de Negócio</strong> da Bizapp incluem descoberta de casos de uso e priorização por impacto e ROI. Defina métricas iniciais de sucesso antes de iniciar qualquer piloto.'
+  },
+  2: {
+    1: 'Formalize a estratégia com os <strong>Advisory Workshops para C-Level</strong> da Bizapp — inclui criação de roadmap estratégico, definição de Conselho de IA e alinhamento entre tecnologia e objetivos de negócio.',
+    2: 'Implemente o workshop <strong>Responsible AI & Risk Management</strong> da Bizapp para avaliação de impacto e mitigação de riscos (prompt injection, conteúdo nocivo), além de <strong>Prontidão em Privacidade e Segurança</strong> com controles Zero Trust.',
+    3: 'Implemente o <strong>COE Adoption & Change Management</strong> da Bizapp — inclui o agente <strong>Prompt Buddy</strong> para treinar uso de Copilots, a <strong>Academia Bizapp</strong> com trilhas por função, e campanhas de engajamento via Teams.',
+    4: 'Avance com o <strong>Readiness</strong> da Bizapp para planejamento de integração e segurança contínua, incluindo auditoria de licenças Microsoft, configurações técnicas obrigatórias e avaliação de prontidão de dados.',
+    5: 'Estruture sua plataforma com a Bizapp — adoção de <strong>Microsoft Copilot</strong>, <strong>Copilot Studio</strong> e serviços Azure AI. O Readiness identifica os próximos passos para evoluir para uma stack completa de IA.',
+    6: 'Avance na <strong>Governança de Segurança de IA</strong> da Bizapp — políticas formais para uso de Copilots, DLP por ambiente, classificação de dados sensíveis e processo de aprovação de novos agentes.',
+    7: 'Use o <strong>Copilot Studio Catalyst</strong> da Bizapp — "Seu próprio Copilot MVP em 4 semanas" — para criar agentes personalizados. Combine com o <strong>Automation Coach</strong> para identificar e priorizar processos com alto potencial de automação.',
+    8: 'Com o <strong>Playbook Adoção Copilot</strong> da Bizapp, configure dashboards de KPIs e relatórios de adoção. Inclui métricas de produtividade, economia de tempo e satisfação do usuário para mensurar impacto inicial.'
+  },
+  3: {
+    1: 'Crie o <strong>Conselho de IA</strong> com apoio do Playbook de Adoção da Bizapp — define papéis, responsabilidades e governança. O <strong>Readiness</strong> também ajuda a estruturar orçamento dedicado e designar liderança formal de IA.',
+    2: 'Implemente o <strong>COE Admin & Governance</strong> da Bizapp com foco em conformidade: GDPR, LGPD, residência de dados, Customer Lockbox, canais seguros (Web, Teams, WhatsApp) e processo formal de validação de agentes antes da publicação.',
+    3: 'Escale com o <strong>Automation Coach</strong> da Bizapp — programa contínuo que capacita Key Users como Business Champions usando Citizen Development, com suporte direto de especialistas em Copilot Studio e Power Automate.',
+    4: 'Implante o <strong>COE Admin & Governance</strong> da Bizapp — modelo de governança por zonas (Citizen, Partnered, Professional), políticas de DLP por ambiente, autenticação via Entra ID e integração com Azure Application Insights.',
+    5: 'Evolua para uma <strong>plataforma MLOps</strong> com Custom Projects da Bizapp — Azure ML, Foundry, integração com Copilot Studio e arquitetura escalável para produção contínua de modelos.',
+    6: 'Implante <strong>monitoramento contínuo de modelos</strong> via COE Admin & Governance — Application Insights para agentes, detecção de drift e qualidade, validação de viés e processos formais de revisão.',
+    7: 'Combine o <strong>Copilot Studio Catalyst</strong> para agentes customizados com os <strong>Playbooks de Casos de Uso</strong> da Bizapp — roteiros por área de negócio (vendas, marketing, RH, finanças) e exemplos de agentes (Due Diligence, Onboarding, Atendimento).',
+    8: 'Use a estratégia de <strong>Gamification & ROI</strong> do COE de Adoção da Bizapp — dashboards de produtividade, economia de tempo, impacto em receita e satisfação do usuário. Inclui ciclos de experimentação com testes e evolução contínua.'
+  },
+  4: {
+    1: 'IA como agenda permanente do Board. O <strong>AI Strategy Framework</strong> da Bizapp posiciona sua empresa como "Frontier Firm" — integre indicadores de IA nos OKRs corporativos com apoio do Conselho de IA e Advisory contínuo.',
+    2: 'Avance para governança madura com o <strong>COE Admin & Governance</strong> — monitoramento via Application Insights, dashboards de KPIs conversacionais (CSAT, deflection rate), inventário de agentes por tenant e gestão contínua de riscos.',
+    3: 'Estruture um <strong>Centro de Excelência (COE)</strong> completo com a Bizapp — combinando Admin & Governance, Adoption & Change Management e Automation Coach. Posicione a empresa como referência em adoção de IA com programa de champions.',
+    4: 'Escale a infraestrutura com <strong>Custom Projects</strong> e <strong>Squad on Demand</strong> da Bizapp — equipes especializadas para integrações avançadas, conectores e orquestração generativa com agentes autônomos.',
+    5: 'Eleve para <strong>plataforma MLOps madura</strong> com Custom Projects da Bizapp — Azure AI Foundry completo, agentes autônomos em produção, observabilidade ponta a ponta e integração com sistemas críticos (ERP, CRM, SAP).',
+    6: 'Implemente <strong>Privacy by Design e Zero Trust para IA</strong> — Custom Projects da Bizapp para arquitetura de segurança de IA enterprise, com gestão proativa de riscos e auditoria contínua de modelos em produção.',
+    7: 'Use <strong>Squad on Demand</strong> e <strong>Custom Projects</strong> da Bizapp para escalar IA por toda a empresa — inclui orquestração generativa, agentes autônomos e integração com sistemas legados (CRM, SAP, Notion). Desenvolva ecossistema completo.',
+    8: 'Maximize ROI com o framework completo da Bizapp — <strong>Gamification & ROI</strong>, dashboards avançados de produtividade e medição de impacto estratégico. Explore novos modelos de negócio habilitados por agentes de IA.'
+  },
+  5: {
+    1: 'Mantenha a liderança com o <strong>AI Strategy Framework</strong> da Bizapp em modo contínuo — Advisory periódico para C-Level, revisão de roadmap estratégico e co-inovação com o ecossistema Microsoft.',
+    2: 'Seja referência em IA ética com a Bizapp — governança madura, transparência radical com stakeholders e contribuição para boas práticas do setor através do framework de <strong>IA Responsável</strong>.',
+    3: 'Lidere o mercado com o <strong>COE</strong> completo da Bizapp — desenvolva programas de mentoria interna, compartilhe conhecimento e posicione a empresa como employer brand em IA com cultura de aprendizado contínuo.',
+    4: 'Seja referência em arquitetura de dados e IA com <strong>Custom Projects</strong> avançados da Bizapp — integração em tempo real, orquestração generativa e agentes autônomos em escala enterprise.',
+    5: 'Lidere inovação tecnológica com <strong>Custom Projects</strong> da Bizapp e parceria estratégica com Microsoft — adote primeiro as novas capacidades de Copilot, Foundry e modelos de fronteira.',
+    6: 'Lidere o setor em <strong>IA Segura e Responsável</strong> — co-inovação com a Bizapp em práticas de XAI, red teaming de modelos e contribuição para padrões de mercado em segurança de IA.',
+    7: 'Lidere inovação com <strong>AI Assisted Ideation</strong> em ciclos contínuos e <strong>Squad on Demand</strong> da Bizapp. Crie soluções proprietárias com Copilot Studio e Power Platform para diferenciais competitivos únicos.',
+    8: 'Maximize valor com a parceria estratégica da Bizapp — mensuração contínua de ROI, cases de sucesso documentados e exploração de novas fronteiras de valor com agentes de IA e automação inteligente.'
+  }
+};
+
+// ===== PRODUCTS CATALOG =====
+const PRODUCTS = [
+  {
+    id: 'readiness', name: 'Readiness — Preparação Estratégica',
+    tag: 'Pilar 1', tagColor: '#8034AE',
+    desc: 'Auditoria de licenças, prontidão técnica, políticas de segurança e estrutura do COE.',
+    levels: [1,2,3], dims: [1,4,5]
+  },
+  {
+    id: 'advisory', name: 'Advisory Workshops Estratégicos',
+    tag: 'Pilar 2', tagColor: '#953CCC',
+    desc: 'Sessões para C-Level (Frontier Firm & AI Vision), TI (Risk Management) e Negócio (Casos de Uso & ROI).',
+    levels: [1,2,3], dims: [1,2,8]
+  },
+  {
+    id: 'fasttrack', name: 'Copilot Adoption FastTrack',
+    tag: 'Deploy', tagColor: '#AD46ED',
+    desc: 'Adoção acelerada do Microsoft Copilot em 30-60 dias com metodologia AI-First.',
+    levels: [1,2,3], dims: [3,7]
+  },
+  {
+    id: 'catalyst', name: 'Copilot Studio Catalyst',
+    tag: 'Deploy', tagColor: '#CB61E8',
+    desc: 'Seu próprio agente de IA (MVP) em 4 semanas — design, integração e go-live.',
+    levels: [2,3,4], dims: [7]
+  },
+  {
+    id: 'ideation', name: 'AI Assisted Ideation',
+    tag: 'Deploy', tagColor: '#CB61E8',
+    desc: 'Sprints de 2 semanas para pilotos rápidos de agentes e automações de alto impacto.',
+    levels: [1,2,3,4], dims: [7,8]
+  },
+  {
+    id: 'coe-gov', name: 'COE Admin & Governance',
+    tag: 'COE', tagColor: '#b06cde',
+    desc: 'Governança por zonas (Citizen/Partnered/Professional), DLP, conformidade GDPR e monitoramento.',
+    levels: [3,4,5], dims: [2,4,6]
+  },
+  {
+    id: 'coe-adopt', name: 'COE Adoption & Change Management',
+    tag: 'COE', tagColor: '#b06cde',
+    desc: 'Prompt Buddy, Academia Bizapp, AI Literacy, playbooks por área e gamificação com ROI.',
+    levels: [2,3,4], dims: [3,8]
+  },
+  {
+    id: 'coach', name: 'Automation Coach',
+    tag: 'COE', tagColor: '#b06cde',
+    desc: 'Programa Citizen Developer — capacita Key Users como Business Champions com Power Platform e Copilot Studio.',
+    levels: [2,3,4], dims: [3,7]
+  },
+  {
+    id: 'squad', name: 'Squad on Demand & Custom Projects',
+    tag: 'Sob Demanda', tagColor: '#d07bf0',
+    desc: 'Equipes especializadas para integrações avançadas, orquestração generativa e agentes autônomos.',
+    levels: [3,4,5], dims: [4,7,8]
+  }
+];
+
+function getRecommendedProducts(maturityLevel, dimScores) {
+  const weakDims = dimScores
+    .filter(d => d.dim.type === 'maturity')
+    .sort((a, b) => a.pct - b.pct)
+    .slice(0, 3)
+    .map(d => d.dim.id);
+
+  return PRODUCTS
+    .filter(p => p.levels.includes(maturityLevel))
+    .map(p => {
+      const dimMatch = p.dims.filter(d => weakDims.includes(d)).length;
+      return { ...p, relevance: dimMatch };
+    })
+    .sort((a, b) => b.relevance - a.relevance)
+    .slice(0, 4);
+}
+
+// ===== STATE =====
+let answers = {};
+let currentDim = 0;
+let currentQ = 0;
+let leadData = {};
+
+// ===== LANDING =====
+window.addEventListener('scroll', () => {
+  document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ===== SURVEY =====
+function startSurvey() {
+  answers = {};
+  currentDim = 0;
+  currentQ = 0;
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('resultsContainer').classList.remove('active');
+  document.getElementById('surveyContainer').classList.add('active');
+  document.getElementById('surveyProgress').style.display = 'none';
+  showLeadForm();
+  window.scrollTo(0, 0);
+}
+
+function backToLanding() {
+  document.getElementById('landing').style.display = '';
+  document.getElementById('surveyContainer').classList.remove('active');
+  document.getElementById('resultsContainer').classList.remove('active');
+  window.scrollTo(0, 0);
+}
+
+function showLeadForm() {
+  const c = document.getElementById('surveyContent');
+  c.innerHTML = `
+    <div class="lead-form-wrap">
+      <div class="lead-form animate-in">
+        <h2>Antes de começar</h2>
+        <p class="subtitle">Preencha seus dados para receber o relatório personalizado.</p>
+        <div class="form-group">
+          <label>Nome completo *</label>
+          <input type="text" id="leadName" placeholder="Seu nome" required>
+        </div>
+        <div class="form-group">
+          <label>E-mail corporativo *</label>
+          <input type="email" id="leadEmail" placeholder="nome@empresa.com" required>
+        </div>
+        <div class="form-group">
+          <label>Empresa *</label>
+          <input type="text" id="leadCompany" placeholder="Nome da empresa">
+        </div>
+        <div class="form-group">
+          <label>Cargo</label>
+          <input type="text" id="leadRole" placeholder="Seu cargo">
+        </div>
+        <div class="form-group">
+          <label>Setor</label>
+          <select id="leadSector">
+            <option value="">Selecione...</option>
+            <option>Tecnologia</option>
+            <option>Financeiro / Banking</option>
+            <option>Saúde</option>
+            <option>Varejo</option>
+            <option>Indústria / Manufatura</option>
+            <option>Agronegócio</option>
+            <option>Educação</option>
+            <option>Energia / Utilities</option>
+            <option>Logística / Transporte</option>
+            <option>Governo / Setor Público</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" style="width:100%; justify-content:center; margin-top:8px;" onclick="submitLead()">Começar Assessment →</button>
+      </div>
+    </div>
+  `;
+}
+
+function submitLead() {
+  const name = document.getElementById('leadName').value.trim();
+  const email = document.getElementById('leadEmail').value.trim();
+  const company = document.getElementById('leadCompany').value.trim();
+  if (!name || !email || !company) {
+    alert('Por favor, preencha nome, e-mail e empresa.');
+    return;
+  }
+  leadData = {
+    name, email, company,
+    role: document.getElementById('leadRole').value.trim(),
+    sector: document.getElementById('leadSector').value
+  };
+  currentDim = 0;
+  currentQ = 0;
+  showQuestion();
+}
+
+function showQuestion() {
+  const dim = DIMENSIONS[currentDim];
+  const q = dim.questions[currentQ];
+  const totalQ = DIMENSIONS.reduce((s, d) => s + d.questions.length, 0);
+  const answeredQ = Object.keys(answers).length;
+  const globalIdx = DIMENSIONS.slice(0, currentDim).reduce((s, d) => s + d.questions.length, 0) + currentQ;
+
+  // Update progress
+  const prog = document.getElementById('surveyProgress');
+  prog.style.display = '';
+  document.getElementById('progressDimName').textContent = `${dim.icon} ${dim.name}`;
+  document.getElementById('progressCount').textContent = `Pergunta ${answeredQ + 1} de ${totalQ}`;
+  document.getElementById('progressBar').style.width = `${(answeredQ / totalQ) * 100}%`;
+
+  // Dots
+  let dotsHtml = '';
+  DIMENSIONS.forEach((d, di) => {
+    const cls = di < currentDim ? 'done' : (di === currentDim ? 'active' : '');
+    dotsHtml += `<div class="progress-dot ${cls}"></div>`;
+  });
+  document.getElementById('progressDots').innerHTML = dotsHtml;
+
+  const key = `${currentDim}-${currentQ}`;
+  const selected = answers[key];
+
+  let optionsHtml = '';
+  q.options.forEach((opt, i) => {
+    const pts = i + 1;
+    const sel = selected === pts ? 'selected' : '';
+    optionsHtml += `
+      <button class="option-btn ${sel}" onclick="selectOption(${pts})">
+        <div class="option-score">${pts}</div>
+        <div class="option-text">${opt}</div>
+      </button>
+    `;
+  });
+
+  const isFirst = currentDim === 0 && currentQ === 0;
+  const isLast = currentDim === DIMENSIONS.length - 1 && currentQ === dim.questions.length - 1;
+
+  const c = document.getElementById('surveyContent');
+  c.innerHTML = `
+    <div class="question-screen">
+      <div class="question-card animate-in">
+        <div class="question-dim-badge">${dim.icon} ${dim.name}${dim.type === 'ambition' ? ' (Aspiracional)' : ''}</div>
+        <div class="question-text">
+          <span class="question-num">${currentQ + 1}/${dim.questions.length}</span><br>
+          ${q.text}
+        </div>
+        ${q.tooltip ? `<details class="question-tooltip">
+          <summary>💡 Ajuda</summary>
+          <div class="question-tooltip-content">${q.tooltip}</div>
+        </details>` : ''}
+        <div class="options-list">${optionsHtml}</div>
+        <div class="question-nav">
+          <button class="btn btn-secondary btn-sm" onclick="prevQuestion()" ${isFirst ? 'disabled style="opacity:0.3; pointer-events:none;"' : ''}>← Voltar</button>
+          <button class="btn btn-primary btn-sm" id="nextBtn" onclick="${isLast ? 'showResults()' : 'nextQuestion()'}" ${!selected ? 'disabled style="opacity:0.4; pointer-events:none;"' : ''}>
+            ${isLast ? 'Ver Resultado →' : 'Próxima →'}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  window.scrollTo(0, 0);
+}
+
+function selectOption(pts) {
+  const key = `${currentDim}-${currentQ}`;
+  answers[key] = pts;
+  showQuestion();
+}
+
+function nextQuestion() {
+  const dim = DIMENSIONS[currentDim];
+  if (currentQ < dim.questions.length - 1) {
+    currentQ++;
+  } else if (currentDim < DIMENSIONS.length - 1) {
+    currentDim++;
+    currentQ = 0;
+  }
+  showQuestion();
+}
+
+function prevQuestion() {
+  if (currentQ > 0) {
+    currentQ--;
+  } else if (currentDim > 0) {
+    currentDim--;
+    currentQ = DIMENSIONS[currentDim].questions.length - 1;
+  }
+  showQuestion();
+}
+
+// ===== RESULTS =====
+function getLevel(score) {
+  return LEVELS.find(l => score >= l.min && score <= l.max) || LEVELS[0];
+}
+
+function calcScores() {
+  const dimScores = [];
+  let ambitionSum = 0;
+  let ambitionMax = 0;
+
+  DIMENSIONS.forEach((dim, di) => {
+    let sum = 0;
+    dim.questions.forEach((q, qi) => {
+      sum += answers[`${di}-${qi}`] || 1;
+    });
+    const maxPts = dim.questions.length * 4;
+    const pct = Math.round((sum / maxPts) * 100);
+    dimScores.push({ dim, sum, maxPts, pct, level: getLevel(pct) });
+    if (dim.type === 'ambition') {
+      ambitionSum += sum;
+      ambitionMax += maxPts;
+    }
+  });
+
+  // Weighted maturity score by sector
+  const sectorKey = normalizeSector(leadData.sector);
+  const weights = SECTOR_WEIGHTS[sectorKey] || SECTOR_WEIGHTS['outro'];
+  let weightedSum = 0;
+  let weightTotal = 0;
+  dimScores.forEach(ds => {
+    if (ds.dim.type !== 'maturity') return;
+    const w = weights[ds.dim.id] || 0;
+    weightedSum += ds.pct * w;
+    weightTotal += w;
+  });
+  const maturityPct = weightTotal > 0 ? Math.round(weightedSum / weightTotal) : 0;
+
+  const ambitionPct = ambitionMax > 0 ? Math.round((ambitionSum / ambitionMax) * 100) : 0;
+
+  return {
+    dimScores,
+    sector: sectorKey,
+    weights,
+    maturity: { pct: maturityPct, level: getLevel(maturityPct) },
+    ambition: { total: ambitionSum, pct: ambitionPct, level: getLevel(ambitionPct) },
+    gap: getLevel(ambitionPct).num - getLevel(maturityPct).num
+  };
+}
+
+let lastScores = null;
+
+function showResults() {
+  const scores = calcScores();
+  lastScores = scores;
+  const maturityDims = scores.dimScores.filter(d => d.dim.type === 'maturity');
+
+  document.getElementById('surveyContainer').classList.remove('active');
+  document.getElementById('resultsContainer').classList.add('active');
+
+  // Build radar chart SVG
+  const radarSvg = buildRadarSVG(maturityDims, scores);
+
+  // Build dimension bars
+  let dimBarsHtml = '';
+  maturityDims.forEach(ds => {
+    dimBarsHtml += `
+      <div class="dim-result">
+        <div class="dim-result-header">
+          <div class="dim-result-name">${ds.dim.icon} ${ds.dim.name}</div>
+          <div class="dim-result-score">${ds.pct}%</div>
+        </div>
+        <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:${ds.pct}%; background:${ds.dim.color};"></div></div>
+        <div class="dim-result-level">Nível ${ds.level.num} — ${ds.level.name}</div>
+      </div>
+    `;
+  });
+
+  // Build recommendations
+  let recsHtml = '';
+  maturityDims.forEach(ds => {
+    const levelRecs = RECOMMENDATIONS[ds.level.num];
+    if (levelRecs && levelRecs[ds.dim.id]) {
+      recsHtml += `
+        <div class="rec-item">
+          <div class="rec-dim">${ds.dim.icon} ${ds.dim.name} — Nível ${ds.level.num} (${ds.level.name})</div>
+          <div class="rec-text">${levelRecs[ds.dim.id]}</div>
+        </div>
+      `;
+    }
+  });
+
+  // Recommended Products
+  const recProducts = getRecommendedProducts(scores.maturity.level.num, scores.dimScores);
+  let productsHtml = '';
+  recProducts.forEach(p => {
+    const fitLabel = p.relevance >= 2 ? 'Alta aderência ao seu perfil' : (p.relevance === 1 ? 'Recomendado para seu nível' : 'Complementar à sua jornada');
+    productsHtml += `
+      <div class="rec-product-card">
+        <div class="rp-tag" style="background:${p.tagColor}22; color:${p.tagColor};">${p.tag}</div>
+        <h4>${p.name}</h4>
+        <p>${p.desc}</p>
+        <div class="rp-fit">✓ ${fitLabel}</div>
+      </div>
+    `;
+  });
+
+  // GAP
+  const gapVal = Math.max(0, Math.min(4, scores.gap));
+  const gapMsg = GAP_MESSAGES[gapVal] || GAP_MESSAGES[0];
+
+  const circumference = 2 * Math.PI * 90;
+  const offset = circumference - (scores.maturity.pct / 100) * circumference;
+
+  const content = document.getElementById('resultsContent');
+  content.innerHTML = `
+    <!-- Score Hero -->
+    <div class="score-hero animate-in">
+      <div class="company-name">${leadData.company || 'Sua empresa'}</div>
+      <h2>Resultado do Assessment de Maturidade em IA</h2>
+      <div class="score-circle-wrap">
+        <svg viewBox="0 0 200 200">
+          <circle class="score-circle-bg" cx="100" cy="100" r="90"/>
+          <circle class="score-circle-fill" cx="100" cy="100" r="90"
+            stroke="${scores.maturity.level.color}"
+            stroke-dasharray="${circumference}"
+            stroke-dashoffset="${offset}"/>
+        </svg>
+        <div class="score-value">
+          <div class="big" style="color:${scores.maturity.level.color}">${scores.maturity.pct}</div>
+          <div class="of">de 100</div>
+        </div>
+      </div>
+      <div class="score-level-badge" style="background: ${scores.maturity.level.color}22; color: ${scores.maturity.level.color}; border: 1px solid ${scores.maturity.level.color}44;">
+        ${scores.maturity.level.icon} Nível ${scores.maturity.level.num} — ${scores.maturity.level.name}
+      </div>
+    </div>
+
+    <!-- Radar + Bars -->
+    <div class="results-grid">
+      <div class="results-card">
+        <h3>📊 Radar por Dimensão</h3>
+        <div class="radar-container">${radarSvg}</div>
+        <div class="radar-legend">
+          <div class="radar-legend-item"><div class="radar-legend-dot" style="background: var(--primary);"></div> Maturidade Atual</div>
+          <div class="radar-legend-item"><div class="radar-legend-dot" style="background: var(--accent-purple); opacity:0.5;"></div> Ambição</div>
+        </div>
+      </div>
+      <div class="results-card">
+        <h3>📋 Score por Dimensão</h3>
+        ${dimBarsHtml}
+      </div>
+    </div>
+
+    <!-- GAP -->
+    <div class="results-card gap-card" style="margin-bottom:24px;">
+      <h3>🎯 Análise de GAP — Onde você está vs. Onde quer chegar</h3>
+      <div class="gap-visual">
+        <div class="gap-level-box">
+          <div class="label">Atual</div>
+          <div class="level" style="color:${scores.maturity.level.color}">${scores.maturity.level.num}</div>
+          <div class="name">${scores.maturity.level.name}</div>
+        </div>
+        <div class="gap-arrow">→ GAP ${gapVal} →</div>
+        <div class="gap-level-box">
+          <div class="label">Ambição</div>
+          <div class="level" style="color:${scores.ambition.level.color}">${scores.ambition.level.num}</div>
+          <div class="name">${scores.ambition.level.name}</div>
+        </div>
+      </div>
+      <div class="gap-message">${gapMsg}</div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="results-card full">
+      <h3>🗺️ Recomendações Personalizadas</h3>
+      ${recsHtml}
+    </div>
+
+    <!-- Recommended Products -->
+    <div class="results-card full" style="margin-top: 24px; background: linear-gradient(135deg, rgba(128,52,174,0.08), rgba(203,97,232,0.05)); border-color: rgba(149,60,204,0.15);">
+      <h3>🚀 Soluções Bizapp Recomendadas para Você</h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+        Com base no seu nível <strong style="color:${scores.maturity.level.color}">${scores.maturity.level.name}</strong> e nas dimensões com maior oportunidade de evolução, estas são as soluções mais adequadas:
+      </p>
+      <div class="rec-products-grid">${productsHtml}</div>
+    </div>
+
+    <!-- CTA -->
+    <div class="results-card full" style="margin-top: 24px; text-align: center; background: linear-gradient(135deg, rgba(128,52,174,0.1), rgba(203,97,232,0.06)); border-color: rgba(149,60,204,0.2);">
+      <h3 style="margin-bottom: 12px;">💬 Quer acelerar sua jornada de IA?</h3>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">
+        Agende uma conversa gratuita com nossos especialistas para desenhar um roadmap personalizado.
+      </p>
+      <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+        <a href="https://outlook.office.com/bookwithme/user/ea5e67c4ddf64e17b5ccf6d7698fdfa0@bizapp.com.br?anonymous&ismsaljsauthenabled&ep=bwmEmailSignature" target="_blank" rel="noopener" class="btn btn-primary btn-lg">📅 Agendar com Especialista</a>
+        <a href="mailto:contato@bizapp.com.br?subject=Assessment%20de%20Maturidade%20em%20IA%20-%20${encodeURIComponent(leadData.company || '')}&body=Ol%C3%A1!%20Realizei%20o%20assessment%20e%20obtive%20o%20n%C3%ADvel%20${scores.maturity.level.num}%20(${scores.maturity.level.name})%20com%20score%20${scores.maturity.pct}%2F100.%20Gostaria%20de%20agendar%20uma%20conversa." class="btn btn-outline btn-lg">✉️ Falar por E-mail</a>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="results-actions">
+<button class="btn btn-outline btn-lg" onclick="window.print()">📄 Imprimir Relatório</button>
+      <button class="btn btn-secondary btn-lg" onclick="startSurvey()">🔄 Refazer Assessment</button>
+      <button class="btn btn-secondary btn-lg" onclick="backToLanding()">← Voltar ao Início</button>
+    </div>
+  `;
+
+  window.scrollTo(0, 0);
+
+  // Dispara o webhook automaticamente após o relatório ser gerado
+  sendWebhookAutomatically(scores);
+}
+
+// ===== POWER AUTOMATE CONFIG =====
+const FLOW_WEBHOOK_URL = 'https://7d0a033593c84193ab180cb236c2c0.9c.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/0fd80db2be094535a180643f59d317bc/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=idDI4nCqqzBDPc4PmlRkggOqNcEQcUmz6ijlvyRU3PY';
+const BIZAPP_NOTIFY_EMAIL = 'contato@bizapp.com.br';
+
+// ===== SEND RESULTS BY EMAIL =====
+function showToast(msg, type) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const toast = document.createElement('div');
+  toast.className = 'toast toast-' + type;
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  if (type !== 'loading') setTimeout(() => toast.remove(), 5000);
+}
+
+function buildEmailHTML(scores) {
+  const maturityDims = scores.dimScores.filter(d => d.dim.type === 'maturity');
+  const gapVal = Math.max(0, Math.min(4, scores.gap));
+  const gapMsg = GAP_MESSAGES[gapVal] || GAP_MESSAGES[0];
+  const recProducts = getRecommendedProducts(scores.maturity.level.num, scores.dimScores);
+  const dateStr = new Date().toLocaleDateString('pt-BR');
+  const company = leadData.company || 'Sua empresa';
+  const lvColor = scores.maturity.level.color;
+  const ambColor = scores.ambition.level.color;
+  const logoEl = document.querySelector('.logo img');
+  const logoSrc = logoEl ? logoEl.src : '';
+
+  // Dimension rows
+  let dimRows = '';
+  maturityDims.forEach(ds => {
+    dimRows += '<tr><td style="padding:14px 0;border-bottom:1px solid #eee;">'
+      + '<table width="100%" cellpadding="0" cellspacing="0"><tr>'
+      + '<td style="font-size:14px;color:#333;font-weight:600;padding-bottom:6px;">' + ds.dim.icon + ' ' + ds.dim.name + '</td>'
+      + '<td style="text-align:right;font-size:14px;color:#953CCC;font-weight:700;">' + ds.pct + '%</td>'
+      + '</tr><tr><td colspan="2"><table width="100%" cellpadding="0" cellspacing="0"><tr>'
+      + '<td width="' + ds.pct + '%" style="background-color:' + ds.dim.color + ';height:10px;border-radius:5px 0 0 5px;"></td>'
+      + '<td width="' + (100 - ds.pct) + '%" style="background-color:#f0e8f5;height:10px;border-radius:0 5px 5px 0;"></td>'
+      + '</tr></table></td></tr><tr>'
+      + '<td colspan="2" style="font-size:12px;color:#888;padding-top:4px;">N\u00edvel ' + ds.level.num + ' \u2014 ' + ds.level.name + '</td>'
+      + '</tr></table></td></tr>';
+  });
+
+  // Recommendation rows
+  let recsRows = '';
+  maturityDims.forEach(ds => {
+    const levelRecs = RECOMMENDATIONS[ds.level.num];
+    if (levelRecs && levelRecs[ds.dim.id]) {
+      recsRows += '<tr><td style="padding:16px;background-color:#faf7fc;border-radius:8px;border-left:4px solid ' + ds.dim.color + ';">'
+        + '<p style="font-size:13px;color:#953CCC;font-weight:700;margin:0 0 6px;">' + ds.dim.icon + ' ' + ds.dim.name + ' \u2014 N\u00edvel ' + ds.level.num + '</p>'
+        + '<p style="font-size:13px;color:#555;margin:0;line-height:1.6;">' + levelRecs[ds.dim.id] + '</p>'
+        + '</td></tr><tr><td style="height:8px;"></td></tr>';
+    }
+  });
+
+  // Product rows
+  let productsRows = '';
+  recProducts.forEach(p => {
+    const fitLabel = p.relevance >= 2 ? 'Alta ader\u00eancia ao seu perfil' : (p.relevance === 1 ? 'Recomendado para seu n\u00edvel' : 'Complementar \u00e0 sua jornada');
+    productsRows += '<tr><td style="padding:16px;background-color:#f8f4fc;border-radius:8px;border:1px solid #e8ddf0;">'
+      + '<span style="font-size:11px;background-color:#ede4f5;color:' + p.tagColor + ';padding:2px 10px;border-radius:12px;font-weight:700;">' + p.tag + '</span>'
+      + '<p style="font-size:14px;color:#333;font-weight:600;margin:8px 0 4px;">' + p.name + '</p>'
+      + '<p style="font-size:13px;color:#666;margin:0;line-height:1.5;">' + p.desc + '</p>'
+      + '<p style="font-size:12px;color:#10b981;font-weight:600;margin:8px 0 0;">\u2713 ' + fitLabel + '</p>'
+      + '</td></tr><tr><td style="height:8px;"></td></tr>';
+  });
+
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"></head>'
+    + '<body style="margin:0;padding:0;background-color:#f3f2f5;font-family:Arial,Helvetica,sans-serif;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f3f2f5;padding:24px 0;"><tr><td align="center">'
+    + '<table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:12px;overflow:hidden;">'
+
+    // HEADER
+    + '<tr><td style="background-color:#8034AE;padding:32px;text-align:center;">'
+    + (logoSrc ? '<img src="' + logoSrc + '" alt="bizapp" height="36" style="height:36px;width:auto;display:inline-block;border:0;outline:none;text-decoration:none;"/>' : '<p style="font-size:24px;font-weight:700;color:#ffffff;margin:0;letter-spacing:-0.5px;">bizapp</p>')
+    + '<p style="font-size:14px;color:rgba(255,255,255,0.85);margin:12px 0 0;">Assessment de Maturidade em IA</p>'
+    + '</td></tr>'
+
+    // SCORE HERO
+    + '<tr><td style="padding:40px 32px;text-align:center;background-color:#0e0515;">'
+    + '<p style="font-size:13px;color:#b8a8c8;margin:0 0 4px;">' + company + '</p>'
+    + '<p style="font-size:64px;font-weight:900;color:' + lvColor + ';margin:16px 0 8px;line-height:1;">' + scores.maturity.pct + '</p>'
+    + '<p style="font-size:14px;color:#7a6890;margin:0 0 16px;">de 100 pontos</p>'
+    + '<table cellpadding="0" cellspacing="0" align="center"><tr>'
+    + '<td style="background-color:#1a0f25;color:' + lvColor + ';padding:8px 20px;border-radius:50px;font-size:15px;font-weight:700;border:1px solid #2a1a40;">'
+    + scores.maturity.level.icon + ' N\u00edvel ' + scores.maturity.level.num + ' \u2014 ' + scores.maturity.level.name
+    + '</td></tr></table>'
+    + '</td></tr>'
+
+    // INFO BAR
+    + '<tr><td style="padding:16px 32px;background-color:#f8f6fa;border-bottom:1px solid #eee;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0"><tr>'
+    + '<td style="font-size:13px;color:#666;"><strong>Respondente:</strong> ' + (leadData.name || '\u2014') + (leadData.role ? ' (' + leadData.role + ')' : '') + '</td>'
+    + '<td style="font-size:13px;color:#666;text-align:right;">' + dateStr + '</td>'
+    + '</tr></table></td></tr>'
+
+    // DIMENSIONS
+    + '<tr><td style="padding:32px;">'
+    + '<p style="font-size:16px;font-weight:700;color:#333;margin:0 0 20px;">\uD83D\uDCCA Score por Dimens\u00e3o</p>'
+    + '<table width="100%" cellpadding="0" cellspacing="0">' + dimRows + '</table>'
+    + '</td></tr>'
+
+    // GAP ANALYSIS
+    + '<tr><td style="padding:0 32px 32px;">'
+    + '<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f5eefa;border-radius:12px;border:1px solid #e8ddf0;"><tr><td style="padding:24px;text-align:center;">'
+    + '<p style="font-size:16px;font-weight:700;color:#333;margin:0 0 16px;">\uD83C\uDFAF An\u00e1lise de GAP</p>'
+    + '<table cellpadding="0" cellspacing="0" align="center"><tr>'
+    + '<td style="text-align:center;padding:12px 20px;background:#fff;border-radius:10px;border:1px solid #eee;">'
+    + '<p style="font-size:11px;color:#888;margin:0;">ATUAL</p>'
+    + '<p style="font-size:28px;font-weight:900;color:' + lvColor + ';margin:4px 0;">' + scores.maturity.level.num + '</p>'
+    + '<p style="font-size:12px;color:#666;margin:0;">' + scores.maturity.level.name + '</p></td>'
+    + '<td style="padding:0 16px;font-size:20px;color:#953CCC;">\u2192</td>'
+    + '<td style="text-align:center;padding:12px 20px;background:#fff;border-radius:10px;border:1px solid #eee;">'
+    + '<p style="font-size:11px;color:#888;margin:0;">AMBI\u00c7\u00c3O</p>'
+    + '<p style="font-size:28px;font-weight:900;color:' + ambColor + ';margin:4px 0;">' + scores.ambition.level.num + '</p>'
+    + '<p style="font-size:12px;color:#666;margin:0;">' + scores.ambition.level.name + '</p></td>'
+    + '</tr></table>'
+    + '<p style="font-size:14px;color:#555;margin:16px 0 0;padding:12px;background-color:#ede4f5;border-radius:8px;">' + gapMsg + '</p>'
+    + '</td></tr></table></td></tr>'
+
+    // RECOMMENDATIONS
+    + '<tr><td style="padding:0 32px 32px;">'
+    + '<p style="font-size:16px;font-weight:700;color:#333;margin:0 0 16px;">\uD83D\uDDFA\uFE0F Recomenda\u00e7\u00f5es Personalizadas</p>'
+    + '<table width="100%" cellpadding="0" cellspacing="0">' + recsRows + '</table>'
+    + '</td></tr>'
+
+    // PRODUCTS
+    + '<tr><td style="padding:0 32px 32px;">'
+    + '<p style="font-size:16px;font-weight:700;color:#333;margin:0 0 4px;">\uD83D\uDE80 Solu\u00e7\u00f5es Bizapp Recomendadas</p>'
+    + '<p style="font-size:13px;color:#888;margin:0 0 16px;">Com base no seu n\u00edvel e dimens\u00f5es com maior oportunidade:</p>'
+    + '<table width="100%" cellpadding="0" cellspacing="0">' + productsRows + '</table>'
+    + '</td></tr>'
+
+    // CTA
+    + '<tr><td style="padding:32px;text-align:center;background-color:#f5eefa;border-top:1px solid #eee;">'
+    + '<p style="font-size:16px;font-weight:700;color:#333;margin:0 0 8px;">\uD83D\uDCAC Quer acelerar sua jornada de IA?</p>'
+    + '<p style="font-size:14px;color:#666;margin:0 0 20px;">Agende uma conversa gratuita com nossos especialistas.</p>'
+    + '<table cellpadding="0" cellspacing="0" align="center"><tr>'
+    + '<td style="background-color:#8034AE;border-radius:50px;padding:14px 28px;">'
+    + '<a href="https://outlook.office.com/bookwithme/user/ea5e67c4ddf64e17b5ccf6d7698fdfa0@bizapp.com.br?anonymous&ismsaljsauthenabled&ep=bwmEmailSignature" style="color:#ffffff;text-decoration:none;font-weight:600;font-size:15px;">\ud83d\udcc5 Agendar com Especialista</a>'
+    + '</td>'
+    + '<td style="width:12px;"></td>'
+    + '<td style="border:2px solid #8034AE;border-radius:50px;padding:12px 26px;">'
+    + '<a href="mailto:contato@bizapp.com.br?subject=Assessment%20IA%20-%20' + encodeURIComponent(company) + '" style="color:#8034AE;text-decoration:none;font-weight:600;font-size:15px;">\u2709\ufe0f Falar por E-mail</a>'
+    + '</td></tr></table></td></tr>'
+
+    // FOOTER
+    + '<tr><td style="padding:20px 32px;text-align:center;background-color:#06010a;">'
+    + '<p style="font-size:12px;color:#7a6890;margin:0;">\u00a9 ' + new Date().getFullYear() + ' bizapp \u2014 Assessment de Maturidade em IA v2.0</p>'
+    + '</td></tr>'
+
+    + '</table></td></tr></table></body></html>';
+}
+
+function buildAssessmentPayload(s) {
+  const maturityDims = s.dimScores.filter(d => d.dim.type === 'maturity');
+  const ambitionDim = s.dimScores.find(d => d.dim.type === 'ambition');
+  const gapVal = Math.max(0, Math.min(4, s.gap));
+  const gapMsg = GAP_MESSAGES[gapVal] || GAP_MESSAGES[0];
+  const recProducts = getRecommendedProducts(s.maturity.level.num, s.dimScores);
+
+  const dimSlug = { 1: 'estrategia', 2: 'governanca', 3: 'pessoas', 4: 'dados', 5: 'tecnologia', 6: 'seguranca', 7: 'adocao', 8: 'resultados', 9: 'ambicao' };
+
+  const dimensions = s.dimScores.map(function(ds) {
+    const di = DIMENSIONS.indexOf(ds.dim);
+    const answers = ds.dim.questions.map(function(q, qi) {
+      const val = answers_get(di, qi);
+      return {
+        questionId: 'q' + (qi + 1),
+        questionText: q.text,
+        value: val,
+        selectedText: q.options[val - 1] || ''
+      };
+    });
+    return {
+      id: dimSlug[ds.dim.id] || ('dim' + ds.dim.id),
+      name: ds.dim.name,
+      type: ds.dim.type === 'ambition' ? 'aspirational' : 'maturity',
+      score: ds.pct,
+      rawSum: ds.sum,
+      level: { num: ds.level.num, name: ds.level.name },
+      answers: answers
+    };
+  });
+
+  return {
+    assessmentId: generateUUID(),
+    submittedAt: new Date().toISOString(),
+    version: '2.0',
+    lead: {
+      name: leadData.name || '',
+      email: leadData.email || '',
+      company: leadData.company || '',
+      role: leadData.role || '',
+      sector: leadData.sector || ''
+    },
+    results: {
+      overallScore: s.maturity.pct,
+      overallLevel: { num: s.maturity.level.num, name: s.maturity.level.name },
+      ambitionScore: s.ambition.pct,
+      ambitionLevel: { num: s.ambition.level.num, name: s.ambition.level.name },
+      gap: gapVal,
+      gapMessage: gapMsg
+    },
+    dimensions: dimensions,
+    recommendedProducts: recProducts.map(function(p) {
+      const fit = p.relevance >= 2 ? 'high' : (p.relevance === 1 ? 'medium' : 'low');
+      return { id: p.id, name: p.name, tag: p.tag, fit: fit, relevance: p.relevance };
+    }),
+    metadata: {
+      userAgent: navigator.userAgent || '',
+      language: navigator.language || 'pt-BR',
+      timezone: (Intl.DateTimeFormat().resolvedOptions().timeZone) || '',
+      source: 'hotsite-bizapp'
+    }
+  };
+}
+
+function answers_get(di, qi) {
+  return answers[di + '-' + qi] || 1;
+}
+
+function generateUUID() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+function sendResultsByEmail() {
+  if (!lastScores) return;
+  const s = lastScores;
+  const subject = 'Assessment de Maturidade em IA \u2014 ' + (leadData.company || 'Resultado') + ' \u2014 Score ' + s.maturity.pct + '/100 (N\u00edvel ' + s.maturity.level.num + ')';
+  const htmlBody = buildEmailHTML(s);
+  const tmp = document.createElement('div');
+  tmp.innerHTML = htmlBody;
+  const plainBody = tmp.textContent || tmp.innerText || '';
+  const mailto = 'mailto:' + encodeURIComponent(leadData.email || '') + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(plainBody.substring(0, 1800));
+  window.open(mailto, '_blank');
+}
+
+function sendWebhookAutomatically(s) {
+  if (!FLOW_WEBHOOK_URL || FLOW_WEBHOOK_URL === 'COLE_AQUI_A_URL_DO_FLOW') return;
+  if (!s) return;
+
+  const subject = 'Assessment de Maturidade em IA \u2014 ' + (leadData.company || 'Resultado') + ' \u2014 Score ' + s.maturity.pct + '/100 (N\u00edvel ' + s.maturity.level.num + ')';
+  const htmlBody = buildEmailHTML(s);
+  const assessmentData = buildAssessmentPayload(s);
+  assessmentData.email = {
+    to: leadData.email || '',
+    subject: subject,
+    htmlBody: htmlBody,
+    notifyTo: BIZAPP_NOTIFY_EMAIL
+  };
+
+  fetch(FLOW_WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ conteudo: JSON.stringify(assessmentData), relatorio_html: htmlBody, email_destinatario: leadData.email || '', assunto: subject })
+  }).catch(function() {});
+}
+
+// ===== RADAR CHART (SVG) =====
+function buildRadarSVG(maturityDims, scores) {
+  const cx = 200, cy = 200, maxR = 150;
+  const n = maturityDims.length;
+  const angleStep = (2 * Math.PI) / n;
+
+  function polarToXY(angle, radius) {
+    return {
+      x: cx + radius * Math.cos(angle - Math.PI / 2),
+      y: cy + radius * Math.sin(angle - Math.PI / 2)
+    };
+  }
+
+  let svg = `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">`;
+
+  // Background rings
+  [0.25, 0.5, 0.75, 1].forEach(f => {
+    let pts = [];
+    for (let i = 0; i < n; i++) {
+      const p = polarToXY(i * angleStep, maxR * f);
+      pts.push(`${p.x},${p.y}`);
+    }
+    svg += `<polygon points="${pts.join(' ')}" class="radar-polygon-bg"/>`;
+  });
+
+  // Axes
+  for (let i = 0; i < n; i++) {
+    const p = polarToXY(i * angleStep, maxR);
+    svg += `<line x1="${cx}" y1="${cy}" x2="${p.x}" y2="${p.y}" class="radar-axis"/>`;
+  }
+
+  // Ambition fill (uniform since it's one score)
+  const ambPct = scores.ambition.pct / 100;
+  let ambPts = [];
+  for (let i = 0; i < n; i++) {
+    const p = polarToXY(i * angleStep, maxR * ambPct);
+    ambPts.push(`${p.x},${p.y}`);
+  }
+  svg += `<polygon points="${ambPts.join(' ')}" class="radar-polygon-ambition"/>`;
+
+  // Data fill
+  let dataPts = [];
+  maturityDims.forEach((ds, i) => {
+    const p = polarToXY(i * angleStep, maxR * (ds.pct / 100));
+    dataPts.push(`${p.x},${p.y}`);
+  });
+  svg += `<polygon points="${dataPts.join(' ')}" class="radar-polygon-fill"/>`;
+
+  // Data dots + labels
+  maturityDims.forEach((ds, i) => {
+    const p = polarToXY(i * angleStep, maxR * (ds.pct / 100));
+    svg += `<circle cx="${p.x}" cy="${p.y}" r="4" fill="${ds.dim.color}" stroke="#fff" stroke-width="1.5"/>`;
+
+    const lp = polarToXY(i * angleStep, maxR + 30);
+    const anchor = lp.x < 150 ? 'end' : (lp.x > 250 ? 'start' : 'middle');
+    svg += `<text x="${lp.x}" y="${lp.y}" text-anchor="${anchor}" class="radar-label-text">${ds.dim.name}</text>`;
+    svg += `<text x="${lp.x}" y="${lp.y + 14}" text-anchor="${anchor}" class="radar-value-text">${ds.pct}%</text>`;
+  });
+
+  svg += `</svg>`;
+  return svg;
+}
+</script>
+</body>
+</html>

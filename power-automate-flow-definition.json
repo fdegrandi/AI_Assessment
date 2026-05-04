@@ -1,0 +1,136 @@
+{
+  "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "$connections": {
+      "defaultValue": {},
+      "type": "Object"
+    }
+  },
+  "triggers": {
+    "When_a_HTTP_request_is_received": {
+      "type": "Request",
+      "kind": "Http",
+      "inputs": {
+        "method": "POST",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "to": {
+              "type": "string",
+              "description": "E-mail do respondente"
+            },
+            "subject": {
+              "type": "string",
+              "description": "Assunto do e-mail"
+            },
+            "htmlBody": {
+              "type": "string",
+              "description": "Corpo HTML completo do e-mail"
+            },
+            "notifyTo": {
+              "type": "string",
+              "description": "E-mail da equipe Bizapp para notificacao"
+            },
+            "leadName": {
+              "type": "string"
+            },
+            "leadEmail": {
+              "type": "string"
+            },
+            "leadCompany": {
+              "type": "string"
+            },
+            "leadRole": {
+              "type": "string"
+            },
+            "leadSector": {
+              "type": "string"
+            },
+            "score": {
+              "type": "integer"
+            },
+            "levelNum": {
+              "type": "integer"
+            },
+            "levelName": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "to",
+            "subject",
+            "htmlBody"
+          ]
+        }
+      }
+    }
+  },
+  "actions": {
+    "Enviar_resultado_ao_respondente": {
+      "type": "ApiConnection",
+      "inputs": {
+        "host": {
+          "connection": {
+            "name": "@parameters('$connections')['office365']['connectionId']"
+          }
+        },
+        "method": "post",
+        "path": "/v2/Mail",
+        "body": {
+          "To": "@triggerBody()?['to']",
+          "Subject": "@triggerBody()?['subject']",
+          "Body": "<p>@{triggerBody()?['htmlBody']}</p>",
+          "Importance": "Normal",
+          "IsHtml": true
+        }
+      },
+      "runAfter": {}
+    },
+    "Notificar_equipe_Bizapp": {
+      "type": "ApiConnection",
+      "inputs": {
+        "host": {
+          "connection": {
+            "name": "@parameters('$connections')['office365']['connectionId']"
+          }
+        },
+        "method": "post",
+        "path": "/v2/Mail",
+        "body": {
+          "To": "@triggerBody()?['notifyTo']",
+          "Subject": "Novo Assessment de Maturidade em IA — @{triggerBody()?['leadCompany']} — Score @{triggerBody()?['score']}/100",
+          "Body": "<html><body style='font-family:Arial,sans-serif;margin:0;padding:0;background-color:#f5f5f5;'><table width='100%' cellpadding='0' cellspacing='0' style='background-color:#f5f5f5;padding:24px 0;'><tr><td align='center'><table width='520' cellpadding='0' cellspacing='0' style='background-color:#ffffff;border-radius:12px;overflow:hidden;'><tr><td style='background-color:#8034AE;padding:24px;text-align:center;'><p style='font-size:20px;font-weight:700;color:#ffffff;margin:0;'>Novo Assessment Recebido</p></td></tr><tr><td style='padding:32px;'><table width='100%' cellpadding='0' cellspacing='0' style='border-collapse:collapse;'><tr><td style='padding:10px 12px;border-bottom:1px solid #eee;font-weight:700;color:#555;width:120px;font-size:14px;'>Nome</td><td style='padding:10px 12px;border-bottom:1px solid #eee;color:#333;font-size:14px;'>@{triggerBody()?['leadName']}</td></tr><tr><td style='padding:10px 12px;border-bottom:1px solid #eee;font-weight:700;color:#555;font-size:14px;'>E-mail</td><td style='padding:10px 12px;border-bottom:1px solid #eee;color:#333;font-size:14px;'>@{triggerBody()?['leadEmail']}</td></tr><tr><td style='padding:10px 12px;border-bottom:1px solid #eee;font-weight:700;color:#555;font-size:14px;'>Empresa</td><td style='padding:10px 12px;border-bottom:1px solid #eee;color:#333;font-size:14px;'>@{triggerBody()?['leadCompany']}</td></tr><tr><td style='padding:10px 12px;border-bottom:1px solid #eee;font-weight:700;color:#555;font-size:14px;'>Cargo</td><td style='padding:10px 12px;border-bottom:1px solid #eee;color:#333;font-size:14px;'>@{triggerBody()?['leadRole']}</td></tr><tr><td style='padding:10px 12px;border-bottom:1px solid #eee;font-weight:700;color:#555;font-size:14px;'>Setor</td><td style='padding:10px 12px;border-bottom:1px solid #eee;color:#333;font-size:14px;'>@{triggerBody()?['leadSector']}</td></tr><tr><td style='padding:10px 12px;border-bottom:1px solid #eee;font-weight:700;color:#555;font-size:14px;'>Score</td><td style='padding:10px 12px;border-bottom:1px solid #eee;font-size:14px;'><strong style=\"color:#953CCC;\">@{triggerBody()?['score']}/100</strong></td></tr><tr><td style='padding:10px 12px;font-weight:700;color:#555;font-size:14px;'>Nivel</td><td style='padding:10px 12px;font-size:14px;'><strong style=\"color:#953CCC;\">@{triggerBody()?['levelNum']} — @{triggerBody()?['levelName']}</strong></td></tr></table></td></tr><tr><td style='padding:20px 32px;text-align:center;background-color:#f8f6fa;border-top:1px solid #eee;'><p style='font-size:13px;color:#888;margin:0;'>Assessment de Maturidade em IA — bizapp</p></td></tr></table></td></tr></table></body></html>",
+          "Importance": "High",
+          "IsHtml": true
+        }
+      },
+      "runAfter": {
+        "Enviar_resultado_ao_respondente": [
+          "Succeeded"
+        ]
+      }
+    },
+    "Responder_200_OK": {
+      "type": "Response",
+      "kind": "Http",
+      "inputs": {
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "success",
+          "message": "Email enviado com sucesso"
+        }
+      },
+      "runAfter": {
+        "Notificar_equipe_Bizapp": [
+          "Succeeded",
+          "Failed"
+        ]
+      }
+    }
+  },
+  "outputs": {}
+}
